@@ -1,0 +1,5 @@
+# Fichiers locaux (propres à chaque machine) créés par Claude Code et Impeccable
+.claude/settings.local.json
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+__pycache__/
