@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { formulesHref, nav, site, whatsappHref } from "@/config/site";
 import { Logo } from "@/components/ui/Logo";
@@ -16,6 +17,8 @@ export function Header() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("accueil");
+  const pathname = usePathname();
+  const isOn = (href: string) => (href.includes("#") ? pathname === "/" && active === idOf(href) : pathname.replace(/\/$/, "").replace(/\.html$/, "") === href);
 
   useEffect(() => {
     let last = window.scrollY;
@@ -77,10 +80,10 @@ export function Header() {
               <nav aria-label="Navigation principale" className="hidden xl:block">
                 <ul className="flex items-center gap-0.5">
                   {nav.map((item) => {
-                    const on = active === idOf(item.href);
+                    const on = isOn(item.href);
                     return (
                       <li key={item.href}>
-                        <a href={item.href} aria-current={on ? "true" : undefined} className={cn("relative block rounded-full px-3.5 py-2 text-[0.86rem] transition-colors duration-300", on ? "text-porcelain" : "text-espresso/75 hover:text-espresso")}>
+                        <a href={item.href} aria-current={on ? "true" : undefined} className={cn("relative block whitespace-nowrap rounded-full px-3 py-2 text-[0.84rem] transition-colors duration-300", on ? "text-porcelain" : "text-espresso/75 hover:text-espresso")}>
                           {on && <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-espresso" transition={{ type: "spring", stiffness: 380, damping: 32 }} />}
                           <span className="relative">{item.label}</span>
                         </a>

@@ -49,8 +49,12 @@ export const whatsappHref = `https://wa.me/${site.contact.whatsapp}?text=${encod
 /** Lien de la page « Nos formules » (prise de contact privée) */
 export const formulesHref = "/formules";
 
+/** Lien de la page « Notre histoire » */
+export const histoireHref = "/qui-sommes-nous";
+
 export const nav = [
   { label: "Accueil", href: "/#accueil" },
+  { label: "Notre histoire", href: "/qui-sommes-nous" },
   { label: "Notre méthode", href: "/#methode" },
   { label: "Services", href: "/#services" },
   { label: "Formules", href: "/#formules" },

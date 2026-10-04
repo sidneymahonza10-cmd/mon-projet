@@ -8,6 +8,7 @@ const columns = [
     title: "Navigation",
     links: [
       { label: "Accueil", href: "/#accueil" },
+      { label: "Notre histoire", href: "/qui-sommes-nous" },
       { label: "Notre méthode", href: "/#methode" },
       { label: "Estimation", href: "/#estimation" },
     ],
