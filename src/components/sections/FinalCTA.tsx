@@ -25,7 +25,7 @@ export function FinalCTA() {
         </motion.div>
         <div className="absolute inset-0 bg-forest/80" />
         <div className="container-x relative flex min-h-[46rem] flex-col items-center justify-center py-32 text-center sm:min-h-[54rem]">
-          <RotatingBadge text="SANS ENGAGEMENT · RÉPONSE SOUS 24H · " tone="dark" className="mb-10 border border-porcelain/15" />
+          <RotatingBadge text="SANS ENGAGEMENT · RÉPONSE EN 24H · " tone="dark" className="mb-10 border border-porcelain/15" />
           <h2 id="cta-title" className="mx-auto max-w-5xl font-display text-[clamp(2.4rem,6.4vw,5.4rem)] leading-[1.02] text-porcelain">
             <SplitWords text="Et si votre logement pouvait vous rapporter davantage" stagger={0.035} />{" "}
             <SplitWords text="sans vous prendre plus de temps ?" delay={0.3} stagger={0.035} className="italic text-sand" />
