@@ -1,7 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { Manifesto } from "@/components/sections/Manifesto";
 import { Autopilot } from "@/components/sections/Autopilot";
-import { BeforeAfter } from "@/components/sections/BeforeAfter";
 import { Shooting } from "@/components/sections/Shooting";
 import { Services } from "@/components/sections/Services";
 import { Dashboard } from "@/components/sections/Dashboard";
@@ -46,7 +45,6 @@ export default function Home() {
       <Hero />
       <Manifesto />
       <Autopilot />
-      <BeforeAfter />
       <Shooting />
       <Services />
       <Dashboard />
