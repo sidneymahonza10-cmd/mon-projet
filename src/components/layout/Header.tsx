@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { useSelectedLayoutSegment } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { formulesHref, nav, site, whatsappHref } from "@/config/site";
 import { Logo } from "@/components/ui/Logo";
@@ -17,12 +17,10 @@ export function Header() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("accueil");
-  const pathname = usePathname();
-  // Comparaison tolérante (fonctionne aussi pour un export statique servi dans un sous-dossier)
-  const current = pathname.replace(/\/$/, "").replace(/\.html$/, "");
-  const subPages = ["/formules", "/qui-sommes-nous", "/mentions-legales", "/confidentialite"];
-  const isHome = !subPages.some((p) => current.endsWith(p));
-  const isOn = (href: string) => (href.includes("#") ? isHome && active === idOf(href) : current.endsWith(href));
+  // Segment de route (ex. "formules") : identique côté serveur et navigateur, quelle que soit l'URL
+  const segment = useSelectedLayoutSegment();
+  const isHome = segment === null;
+  const isOn = (href: string) => (href.includes("#") ? isHome && active === idOf(href) : href === `/${segment}`);
 
   useEffect(() => {
     let last = window.scrollY;

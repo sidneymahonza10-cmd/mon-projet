@@ -6,7 +6,8 @@ Construit avec **Next.js 16 (App Router) · React 19 · TypeScript · Tailwind C
 
 Direction « Maison claire » : palette crème, lin, sable, caramel et vert forêt issue de la brochure ;
 logo au grand N sous le toit ; intro animée du logo, arche qui s'ouvre en plein écran au scroll,
-orbite « autopilote », services en défilement horizontal, curseur personnalisé (maison sur le simulateur).
+parcours « autopilote » en zigzag, services en carrousel horizontal libre, avant / après piloté par un appareil photo,
+reporting mensuel, curseur maison sur le simulateur.
 
 ## Lancer le site
 
@@ -27,8 +28,8 @@ Toutes les informations provisoires sont regroupées dans 3 fichiers :
 | Fichier | Contenu |
 |---|---|
 | `src/config/site.ts` | **Numéro WhatsApp**, téléphone, **e-mail**, **Instagram**, **zone d'intervention**, domaine du site, message WhatsApp prérempli |
-| `src/config/images.ts` | **Photos** — à déposer dans `public/images/` (voir `public/images/LISEZ-MOI.md`, liens Canva inclus) |
-| `src/data/content.ts` | Services, formules, FAQ, **statistiques**, **témoignages**, **villes de la zone d'intervention** (77 sud, 91, 94) |
+| `src/config/images.ts` | **Photos** avant / après du shooting (`public/images/`) ; l'accueil et la section finale utilisent des illustrations |
+| `src/data/content.ts` | Services, formules, FAQ, **statistiques**, **villes de la zone d'intervention** (77 sud, 91, 94) |
 
 Autres points à compléter :
 
@@ -38,7 +39,7 @@ Autres points à compléter :
 - **Pages légales** : `src/app/mentions-legales` et `src/app/confidentialite` (champs entre crochets).
 - **FAQ** : les réponses marquées `[À préciser par NOVESYA]`.
 
-> Les témoignages, statistiques et données du dashboard sont **fictifs** et signalés comme tels sur le site. Remplacez-les par des données réelles avant publication. Aucun tarif ni pourcentage de commission n'est affiché : les conditions sont présentées en privé.
+> Les statistiques et les données du rapport mensuel d'exemple sont **fictives** et signalés comme tels sur le site. Remplacez-les par des données réelles avant publication. Aucun tarif ni pourcentage de commission n'est affiché : les conditions sont présentées en privé.
 
 ## Structure
 

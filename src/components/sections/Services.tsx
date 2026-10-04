@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Aperture,
+  ArrowLeft,
+  ArrowRight,
   BadgeEuro,
   BarChart3,
   Camera,
@@ -56,62 +58,93 @@ function ServiceCard({ s, i }: { s: (typeof services)[number]; i: number }) {
   );
 }
 
-/** Desktop : galerie horizontale épinglée pilotée par le scroll. Mobile : cartes empilées. */
+/**
+ * Carrousel horizontal libre : le visiteur fait défiler les cartes de gauche à droite
+ * (glisser à la souris, au doigt, trackpad ou flèches) sans bloquer le défilement vertical de la page.
+ */
 export function Services() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const p = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
   const track = useRef<HTMLUListElement>(null);
-  const [shift, setShift] = useState(0);
-  useEffect(() => {
+  const [progress, setProgress] = useState(0);
+  const [edges, setEdges] = useState({ start: true, end: false });
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+
+  const update = () => {
     const el = track.current;
     if (!el) return;
-    const measure = () => setShift(Math.max(0, el.scrollWidth - window.innerWidth + 48));
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    window.addEventListener("resize", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
+    const max = el.scrollWidth - el.clientWidth;
+    setProgress(max > 0 ? el.scrollLeft / max : 0);
+    setEdges({ start: el.scrollLeft < 8, end: el.scrollLeft > max - 8 });
+  };
+
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
-  const x = useTransform(p, [0.05, 0.95], [0, -shift]);
-  const bar = useTransform(p, [0.05, 0.95], [0, 1]);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = track.current;
+    const card = el?.querySelector("li");
+    if (!el || !card) return;
+    el.scrollBy({ left: dir * (card.getBoundingClientRect().width + 20), behavior: "smooth" });
+  };
 
   return (
-    <section id="services" ref={ref} aria-labelledby="services-title" className="relative z-10 -mt-10 rounded-t-[2.5rem] bg-cream sm:rounded-t-[3.5rem] lg:h-[300vh]">
-      <div className="py-28 sm:py-32 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:overflow-hidden lg:py-0">
-        <div className="container-x flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-          <SectionHeading id="services-title" title="Tout ce que votre logement" accent="mérite." description="Huit expertises, un seul interlocuteur." />
-          <div className="hidden w-56 lg:block" aria-hidden="true">
-            <div className="h-px w-full bg-hairline">
-              <motion.div className="h-px origin-left bg-caramel" style={{ scaleX: bar }} />
-            </div>
-            <p className="mt-3 text-right text-xs tracking-[0.2em] text-taupe">FAITES DÉFILER →</p>
+    <section id="services" aria-labelledby="services-title" className="relative z-10 -mt-10 overflow-hidden rounded-t-[2.5rem] bg-cream py-28 sm:rounded-t-[3.5rem] sm:py-36">
+      <div className="container-x flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+        <SectionHeading id="services-title" title="Tout ce que votre logement" accent="mérite." description="Huit expertises, un seul interlocuteur. Faites défiler les cartes pour les découvrir." />
+        <div className="flex items-center gap-4">
+          <div className="hidden h-px w-40 bg-hairline sm:block" aria-hidden="true">
+            <div className="h-px origin-left bg-caramel transition-transform duration-300" style={{ transform: `scaleX(${Math.max(0.08, progress)})` }} />
           </div>
+          <button type="button" onClick={() => scrollByCard(-1)} disabled={edges.start} aria-label="Services précédents" className="grid size-12 place-items-center rounded-full border border-hairline bg-porcelain text-espresso transition-colors hover:border-espresso hover:bg-espresso hover:text-porcelain disabled:opacity-35 disabled:hover:bg-porcelain disabled:hover:text-espresso">
+            <ArrowLeft className="size-4" />
+          </button>
+          <button type="button" onClick={() => scrollByCard(1)} disabled={edges.end} aria-label="Services suivants" className="grid size-12 place-items-center rounded-full border border-hairline bg-porcelain text-espresso transition-colors hover:border-espresso hover:bg-espresso hover:text-porcelain disabled:opacity-35 disabled:hover:bg-porcelain disabled:hover:text-espresso">
+            <ArrowRight className="size-4" />
+          </button>
         </div>
-
-        {/* Desktop */}
-        <div className="mt-14 hidden lg:block">
-          <motion.ul ref={track} style={{ x }} className="flex w-max gap-5 pl-[max(3rem,calc((100vw-86rem)/2+3rem))]">
-            {services.map((s, i) => (
-              <li key={s.key} className="w-[24rem]">
-                <ServiceCard s={s} i={i} />
-              </li>
-            ))}
-          </motion.ul>
-        </div>
-
-        {/* Mobile / tablette */}
-        <ul className="container-x mt-12 grid gap-4 sm:grid-cols-2 lg:hidden">
-          {services.map((s, i) => (
-            <motion.li key={s.key} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "0px 0px -8% 0px" }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-              <ServiceCard s={s} i={i} />
-            </motion.li>
-          ))}
-        </ul>
       </div>
+
+      <ul
+        ref={track}
+        onScroll={update}
+        onPointerDown={(e) => {
+          if (e.pointerType !== "mouse" || !track.current) return;
+          drag.current = { x: e.clientX, left: track.current.scrollLeft, moved: false };
+        }}
+        onPointerMove={(e) => {
+          if (!drag.current || !track.current) return;
+          const dx = e.clientX - drag.current.x;
+          if (Math.abs(dx) > 4) drag.current.moved = true;
+          track.current.scrollLeft = drag.current.left - dx;
+        }}
+        onPointerUp={() => (drag.current = null)}
+        onPointerLeave={() => (drag.current = null)}
+        onClickCapture={(e) => {
+          if (drag.current?.moved) e.preventDefault();
+        }}
+        aria-label="Nos services"
+        data-lenis-prevent-horizontal
+        className="mt-14 flex gap-5 overflow-x-auto overscroll-x-contain px-[max(1.25rem,calc((100vw-86rem)/2+3rem))] pb-6 [scrollbar-width:none] active:cursor-grabbing sm:cursor-grab [&::-webkit-scrollbar]:hidden"
+        style={{ scrollPaddingInline: "max(1.25rem, calc((100vw - 86rem) / 2 + 3rem))" }}
+      >
+        {services.map((s, i) => (
+          <motion.li
+            key={s.key}
+            className="w-[76vw] shrink-0 select-none sm:w-[22rem]"
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: Math.min(i, 4) * 0.07, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ServiceCard s={s} i={i} />
+          </motion.li>
+        ))}
+      </ul>
+      <p className="container-x text-xs tracking-[0.2em] text-taupe sm:hidden" aria-hidden="true">
+        ← FAITES GLISSER →
+      </p>
     </section>
   );
 }

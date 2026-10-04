@@ -162,19 +162,21 @@
     background: var(--color-caramel);
   }
 
-  @media (pointer: fine) {
-    html.has-cursor,
-    html.has-cursor a,
-    html.has-cursor button,
-    html.has-cursor label,
-    html.has-cursor [role="slider"] {
-      cursor: none;
-    }
-    html.has-cursor input,
-    html.has-cursor select,
-    html.has-cursor textarea {
-      cursor: text;
-    }
+  /* Sur le simulateur : petite maison NOVESYA à la place de la flèche */
+  [data-cursor-house],
+  [data-cursor-house] label,
+  [data-cursor-house] button {
+    cursor:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 48 46'><path d='M3 19.5 24 3l21 16.5' fill='none' stroke='%23fdfbf7' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/><path d='M3 19.5 24 3l21 16.5' fill='none' stroke='%23b8874a' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/><g fill='%234a3328' stroke='%23fdfbf7' stroke-width='1.2' paint-order='stroke'><rect x='12.2' y='17' width='2.8' height='25.5'/><rect x='33' y='17' width='2.8' height='25.5'/><path d='M12.2 17h4.8l18.8 25.5h-4.8z'/></g></svg>")
+        16 10,
+      auto;
+  }
+  [data-cursor-house] input,
+  [data-cursor-house] select {
+    cursor: auto;
+  }
+  [data-cursor-house] input[type="range"] {
+    cursor: grab;
   }
 }
 

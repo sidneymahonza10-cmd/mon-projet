@@ -139,7 +139,8 @@ function ZoneMap({ active, onSelect }: { active: DeptId; onSelect: (d: DeptId) =
       <g fontFamily="var(--font-sans)" fontSize="13" letterSpacing="3" fill="#6b5f55">
         <text x="360" y="36">VAL-DE-MARNE · 94</text>
         <text x="110" y="420">ESSONNE · 91</text>
-        <text x="560" y="130">SEINE-ET-MARNE SUD · 77</text>
+        <text x="600" y="300">SEINE-ET-MARNE</text>
+        <text x="600" y="320">SUD · 77</text>
       </g>
       <text x="300" y="16" fontFamily="var(--font-sans)" fontSize="11" fill="#6b5f55">
         ↑ Paris

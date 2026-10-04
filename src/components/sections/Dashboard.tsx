@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { Bell, CalendarDays, FileText, LayoutDashboard, Search, Settings, TrendingUp, Wallet } from "lucide-react";
+import { FileText, Mail, TrendingUp } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Counter } from "@/components/ui/Counter";
 import { LogoMark } from "@/components/ui/Logo";
@@ -63,9 +63,9 @@ export function Dashboard() {
     <section aria-labelledby="dashboard-title" className="relative z-10 -mt-10 overflow-hidden rounded-t-[2.5rem] bg-linen py-28 sm:rounded-t-[3.5rem] sm:py-36">
       <div className="container-x">
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-          <SectionHeading id="dashboard-title" title="Votre espace propriétaire." accent="Tout est visible, en temps réel." description="Revenus, occupation, réservations, calendrier : vous gardez une vision claire de votre activité, où que vous soyez." />
+          <SectionHeading id="dashboard-title" title="Votre reporting" accent="personnalisé, chaque mois." description="Chaque mois, vous recevez un bilan clair de l'activité de votre logement : revenus, occupation, réservations et calendrier. Simple à lire, sans rien avoir à chercher." />
           <p className="inline-flex items-center gap-2 self-start rounded-full border border-dune px-4 py-2 text-xs text-taupe lg:self-end">
-            <span className="size-1.5 rounded-full bg-caramel" /> Aperçu illustratif · données fictives
+            <span className="size-1.5 rounded-full bg-caramel" /> Exemple de rapport · données fictives
           </p>
         </div>
 
@@ -74,57 +74,32 @@ export function Dashboard() {
             style={{ rotateX, scale, y, transformOrigin: "50% 0%" }}
             className="overflow-hidden rounded-[1.5rem] border border-hairline bg-porcelain shadow-[0_70px_120px_-60px_rgba(42,32,26,0.55)] sm:rounded-[2rem]"
             role="img"
-            aria-label="Aperçu fictif du tableau de bord propriétaire NOVESYA : revenus du mois 2 840 €, taux d'occupation 87 %, 18 réservations, prix moyen 126 € par nuit, performance +18 %."
+            aria-label="Exemple fictif de rapport mensuel NOVESYA : revenus du mois 2 840 €, taux d'occupation 87 %, 18 réservations, prix moyen 126 € par nuit, performance +18 %."
           >
-            <div className="flex items-center justify-between border-b border-hairline bg-cream px-4 py-3 sm:px-6">
-              <div className="flex items-center gap-2">
-                <span className="size-2.5 rounded-full bg-dune/60" />
-                <span className="size-2.5 rounded-full bg-dune/60" />
-                <span className="size-2.5 rounded-full bg-dune/60" />
+            <div className="flex items-center justify-between gap-4 border-b border-hairline bg-cream px-4 py-3.5 sm:px-6">
+              <div className="flex items-center gap-2 text-cocoa">
+                <LogoMark className="h-6 text-caramel" />
+                <span className="font-display text-lg tracking-[0.12em]">NOVESYA</span>
               </div>
-              <div className="hidden items-center gap-2 rounded-full bg-porcelain px-4 py-1.5 text-xs text-taupe sm:flex">
-                <Search className="size-3.5" /> espace.novesya.fr
-              </div>
-              <div className="flex items-center gap-3 text-taupe">
-                <Bell className="size-4" />
-                <span className="grid size-7 place-items-center rounded-full bg-caramel text-[0.62rem] font-semibold text-porcelain">VD</span>
+              <div className="flex items-center gap-2 text-xs text-taupe">
+                <span className="hidden items-center gap-1.5 rounded-full bg-porcelain px-3 py-1.5 sm:flex">
+                  <Mail className="size-3.5" /> Envoyé le 1er novembre
+                </span>
+                <span className="flex items-center gap-1.5 rounded-full bg-espresso px-3 py-1.5 text-porcelain">
+                  <FileText className="size-3.5" /> Rapport PDF
+                </span>
               </div>
             </div>
 
             <div className="flex">
-              <aside aria-hidden="true" className="hidden w-56 shrink-0 border-r border-hairline bg-cream/60 p-5 md:block">
-                <div className="flex items-center gap-2 text-cocoa">
-                  <LogoMark className="h-6 text-caramel" />
-                  <span className="font-display text-lg tracking-[0.12em]">NOVESYA</span>
-                </div>
-                <ul className="mt-8 space-y-1 text-sm">
-                  {[
-                    { icon: LayoutDashboard, label: "Vue d'ensemble", on: true },
-                    { icon: CalendarDays, label: "Calendrier" },
-                    { icon: Wallet, label: "Revenus" },
-                    { icon: FileText, label: "Rapports" },
-                    { icon: Settings, label: "Paramètres" },
-                  ].map(({ icon: Icon, label, on }) => (
-                    <li key={label} className={cn("flex items-center gap-3 rounded-xl px-3 py-2.5", on ? "bg-espresso text-porcelain" : "text-taupe")}>
-                      <Icon className="size-4" strokeWidth={1.5} />
-                      {label}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-10 rounded-2xl border border-hairline bg-porcelain p-4">
-                  <p className="text-xs text-taupe">Logement</p>
-                  <p className="mt-1 text-sm text-espresso">Appartement Lumière</p>
-                  <p className="mt-0.5 text-xs text-taupe">T3 · 4 voyageurs</p>
-                </div>
-              </aside>
 
               <div className="min-w-0 flex-1 space-y-4 p-4 sm:p-6">
                 <div className="flex items-end justify-between">
                   <div>
-                    <p className="text-xs text-taupe">Octobre</p>
-                    <p className="font-display text-2xl text-espresso sm:text-3xl">Bonjour, voici votre mois.</p>
+                    <p className="text-xs text-taupe">Rapport mensuel · Appartement Lumière · T3, 4 voyageurs</p>
+                    <p className="font-display text-2xl text-espresso sm:text-3xl">Votre bilan d&apos;octobre</p>
                   </div>
-                  <span className="hidden rounded-full border border-hairline px-3 py-1.5 text-xs text-taupe sm:inline">Exporter le rapport</span>
+                  <span className="hidden rounded-full border border-hairline px-3 py-1.5 text-xs text-taupe sm:inline">Préparé par NOVESYA</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
@@ -167,7 +142,7 @@ export function Dashboard() {
 
                   <div className="rounded-2xl border border-hairline p-4 sm:p-5">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm text-espresso">Calendrier · octobre</p>
+                      <p className="text-sm text-espresso">Nuits réservées · octobre</p>
                       <p className="text-xs text-taupe">24 / 31 nuits</p>
                     </div>
                     <div className="mt-4 grid grid-cols-7 gap-1.5 text-center text-[0.65rem] text-taupe">

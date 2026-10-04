@@ -119,36 +119,12 @@ export const towns: { name: string; dept: Department["id"]; x: number; y: number
   { name: "Étampes", dept: "91", x: 11, y: 64 },
   { name: "Melun", dept: "77", x: 61, y: 45 },
   { name: "Fontainebleau", dept: "77", x: 65, y: 69 },
-  { name: "Montereau-Fault-Yonne", dept: "77", x: 89, y: 71 },
-  { name: "Nemours", dept: "77", x: 65, y: 90 },
+  { name: "Lieusaint", dept: "77", x: 63, y: 30 },
+  { name: "Brie-Comte-Robert", dept: "77", x: 67, y: 17 },
   { name: "Orly", dept: "94", x: 33, y: 10 },
   { name: "Villeneuve-Saint-Georges", dept: "94", x: 41, y: 11 },
   { name: "Choisy-le-Roi", dept: "94", x: 36, y: 5 },
 ];
-
-/* ─────────────────────── Témoignages ───────────────────────
- * PLACEHOLDER — témoignages fictifs, à remplacer par de vrais avis clients.
- */
-export const testimonials = [
-  {
-    quote:
-      "Depuis que NOVESYA gère notre logement, nous avons beaucoup moins de contraintes et une meilleure visibilité sur nos revenus.",
-    author: "Propriétaire Airbnb",
-    place: "Appartement T2",
-  },
-  {
-    quote:
-      "Le shooting a complètement changé la perception de notre annonce. Tout est fluide, et je n'ai plus à répondre aux messages la nuit.",
-    author: "Propriétaire Airbnb",
-    place: "Studio centre-ville",
-  },
-  {
-    quote:
-      "Un interlocuteur unique, des comptes rendus clairs chaque mois. C'est exactement le niveau de service que j'attendais.",
-    author: "Propriétaire Airbnb",
-    place: "Maison familiale",
-  },
-] as const;
 
 /* ─────────────────────── Formulaire ─────────────────────── */
 

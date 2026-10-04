@@ -8,7 +8,6 @@ import { Formulas } from "@/components/sections/Formulas";
 import { Calculator } from "@/components/sections/Calculator";
 import { Stats } from "@/components/sections/Stats";
 import { MapSection } from "@/components/sections/MapSection";
-import { Testimonials } from "@/components/sections/Testimonials";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { ContactForm } from "@/components/sections/ContactForm";
@@ -52,7 +51,6 @@ export default function Home() {
       <Calculator />
       <Stats />
       <MapSection />
-      <Testimonials />
       <FAQ />
       <FinalCTA />
       <ContactForm />

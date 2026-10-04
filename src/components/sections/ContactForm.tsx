@@ -112,7 +112,7 @@ export function ContactForm() {
                   {step === 0 && (
                     <div className="mt-6 space-y-5">
                       <Field id={`${uid}-city`} label="Ville" error={errors.city}>
-                        <input id={`${uid}-city`} className="field" autoComplete="address-level2" placeholder="Ex. Bordeaux" value={lead.city} onChange={(e) => set("city", e.target.value)} aria-invalid={!!errors.city || undefined} aria-describedby={errors.city ? `${uid}-city-err` : undefined} />
+                        <input id={`${uid}-city`} className="field" autoComplete="address-level2" placeholder="Ex. Évry-Courcouronnes" value={lead.city} onChange={(e) => set("city", e.target.value)} aria-invalid={!!errors.city || undefined} aria-describedby={errors.city ? `${uid}-city-err` : undefined} />
                       </Field>
                       <Field id={`${uid}-type`} label="Type de logement">
                         <select id={`${uid}-type`} className="field" value={lead.type} onChange={(e) => set("type", e.target.value)}>

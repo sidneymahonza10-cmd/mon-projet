@@ -65,7 +65,7 @@ export function Calculator() {
                   <input
                     id={`${uid}-city`}
                     className="field"
-                    placeholder="Ex. Bordeaux"
+                    placeholder="Ex. Évry-Courcouronnes"
                     autoComplete="address-level2"
                     value={form.city}
                     aria-invalid={error ? "true" : undefined}

@@ -53,7 +53,7 @@ function Intro({ start }: { start: number | null }) {
         animate={ready ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
         transition={{ duration: 1, delay: d + 0.65, ease }}
       >
-        Nous transformons votre location courte durée en une activité rentable, optimisée et entièrement gérée.
+        Nous transformons votre bien en une activité rentable, optimisée et entièrement gérée.
       </motion.p>
       <motion.div
         className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
