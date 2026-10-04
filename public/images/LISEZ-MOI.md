@@ -1,18 +1,15 @@
 # Photos du site NOVESYA
 
-Téléchargez chaque photo depuis Canva (bouton « Télécharger », format JPG)
-puis déposez-la dans ce dossier **avec exactement ce nom** :
+Le site utilise des illustrations pour l'accueil et la section finale.
+Seules les photos du **shooting avant / après** sont de vraies photos.
 
-| Nom du fichier | Où elle apparaît | Lien Canva |
-|---|---|---|
-| `hero-salon.jpg` | Grande photo d'accueil | https://www.canva.com/M/MAHXFDc_790 |
-| `shooting-avant.jpg` | Avant / après — photo « téléphone » | https://www.canva.com/M/MAHXFK1Fl0k |
-| `shooting-apres.jpg` | Avant / après — photo « shooting pro » | https://www.canva.com/M/MAHXFE811lY |
-| `maison-fontainebleau.jpg` | Section finale | https://www.canva.com/M/MAHXFE-ch80 |
+Déposez-les dans ce dossier **avec exactement ces noms** (format JPG) :
 
-Vous pouvez aussi utiliser vos propres photos : gardez simplement les mêmes noms.
+| Nom du fichier | Où elle apparaît |
+|---|---|
+| `shooting-avant.jpg` | Slider avant / après + section shooting — photo « téléphone » |
+| `shooting-apres.jpg` | Slider avant / après + section shooting — photo « shooting pro » |
 
-Deux photos supplémentaires ont été générées et ne sont pas utilisées pour l'instant
-(réserve pour Instagram ou une future page) :
-- Chambre : https://www.canva.com/M/MAHXFN78V3A
-- Studio : https://www.canva.com/M/MAHXFGZ0VMI
+Photos générées avec Canva (si besoin) :
+- Avant : https://www.canva.com/M/MAHXFK1Fl0k
+- Après : https://www.canva.com/M/MAHXFE811lY

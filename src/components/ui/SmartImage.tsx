@@ -34,7 +34,7 @@ export function SmartImage({ src, alt, className, imgClassName, priority, sizes,
       <div className={cn("absolute inset-0", artClassName)}>
         <InteriorArt variant={variant} />
       </div>
-      {!failed && (
+      {src && !failed && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           ref={ref}

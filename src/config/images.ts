@@ -2,15 +2,17 @@
  * ─────────────────────────────────────────────────────────────
  *  PHOTOS
  * ─────────────────────────────────────────────────────────────
- *  Photos générées avec Canva pour NOVESYA : téléchargez-les depuis Canva
- *  et déposez-les dans /public/images/ sous les noms ci-dessous
- *  (liste et liens dans public/images/LISEZ-MOI.md).
- *  Tant qu'un fichier est absent, une illustration élégante s'affiche à la place.
+ *  Le hero et la section finale utilisent volontairement des illustrations.
+ *  Seules les photos du shooting avant / après sont de vraies photos,
+ *  à déposer dans /public/images/ (voir public/images/LISEZ-MOI.md).
+ *  Une chaîne vide = illustration ; tant qu'un fichier est absent, l'illustration s'affiche aussi.
  */
 
 export const images = {
-  hero: "/images/hero-salon.jpg",
+  // Illustrations dessinées (choix NOVESYA) : laisser vide pour garder l'illustration
+  hero: "",
+  finalCta: "",
+  // Vraies photos du shooting avant / après
   shootingBefore: "/images/shooting-avant.jpg",
   shootingAfter: "/images/shooting-apres.jpg",
-  finalCta: "/images/maison-fontainebleau.jpg",
 } as const;
