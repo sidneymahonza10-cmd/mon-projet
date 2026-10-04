@@ -31,10 +31,11 @@ export const site = {
     instagramHandle: "@novesya",
   },
 
-  // PLACEHOLDER — zone d'intervention réelle
+  // Zone d'intervention
   zone: {
-    label: "Votre ville & ses environs",
-    cities: ["Ville principale", "Commune voisine A", "Commune voisine B"],
+    label: "le sud de la Seine-et-Marne (77), l'Essonne (91) et le Val-de-Marne (94) proche de l'Essonne",
+    short: "Sud 77 · Essonne 91 · Val-de-Marne 94",
+    cities: ["Seine-et-Marne (77) sud", "Essonne (91)", "Val-de-Marne (94)"],
   },
 
   whatsappMessage:
@@ -45,12 +46,15 @@ export const whatsappHref = `https://wa.me/${site.contact.whatsapp}?text=${encod
   site.whatsappMessage,
 )}`;
 
+/** Lien de la page « Nos formules » (prise de contact privée) */
+export const formulesHref = "/formules";
+
 export const nav = [
-  { label: "Accueil", href: "#accueil" },
-  { label: "Notre méthode", href: "#methode" },
-  { label: "Services", href: "#services" },
-  { label: "Tarifs", href: "#tarifs" },
-  { label: "Estimation", href: "#estimation" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
+  { label: "Accueil", href: "/#accueil" },
+  { label: "Notre méthode", href: "/#methode" },
+  { label: "Services", href: "/#services" },
+  { label: "Formules", href: "/#formules" },
+  { label: "Estimation", href: "/#estimation" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/#contact" },
 ] as const;

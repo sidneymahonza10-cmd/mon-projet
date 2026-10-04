@@ -30,7 +30,7 @@ function Word({
   progress: MotionValue<number>;
   range: [number, number];
 }) {
-  const opacity = useTransform(progress, range, [0.16, 1]);
+  const opacity = useTransform(progress, range, [0.14, 1]);
   return (
     <span className="relative mr-[0.25em]">
       <motion.span style={{ opacity }}>{children}</motion.span>

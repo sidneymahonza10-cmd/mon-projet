@@ -1,4 +1,3 @@
-import { images } from "@/config/images";
 import { site } from "@/config/site";
 
 /* ─────────────────────────── Services ─────────────────────────── */
@@ -24,15 +23,18 @@ export const services: { key: ServiceKey; title: string; text: string }[] = [
   { key: "reporting", title: "Reporting", text: "Suivi transparent des performances." },
 ];
 
-/* ─────────────────────────── Formules ─────────────────────────── */
+/* ─────────────────────────── Formules ───────────────────────────
+ * Les conditions tarifaires ne sont pas affichées sur le site :
+ * elles sont présentées en privé après prise de contact.
+ */
 
 export const plans = [
   {
     id: "essentielle",
     name: "Essentielle",
     code: "NOV",
-    rate: 15,
     pitch: "Vous gardez le contrôle, nous gérons l'essentiel.",
+    ideal: "Idéale si vous assurez vous-même l'accueil des voyageurs.",
     intro: null as string | null,
     features: [
       "Création / optimisation de l'annonce",
@@ -42,15 +44,14 @@ export const plans = [
       "Coordination du ménage",
       "Suivi des performances",
     ],
-    cta: "Choisir Essentielle",
     featured: false,
   },
   {
     id: "premium",
     name: "Premium",
     code: "SYA",
-    rate: 20,
     pitch: "L'excellence dans chaque détail. Vous n'avez plus rien à gérer.",
+    ideal: "Idéale pour tout déléguer, de l'accueil au linge.",
     intro: "Tout ce qui est inclus dans Essentielle +",
     features: [
       "Check-in / Check-out",
@@ -61,10 +62,11 @@ export const plans = [
       "Reporting mensuel",
       "Shooting photo professionnel offert",
     ],
-    cta: "Choisir Premium",
     featured: true,
   },
 ] as const;
+
+export const planChoices = ["Essentielle", "Premium", "Je ne sais pas encore"] as const;
 
 /* ─────────────────────── Parcours « autopilote » ─────────────────────── */
 
@@ -97,30 +99,31 @@ export const stats = [
   { prefix: "", value: 1, suffix: "", label: "interlocuteur dédié" },
 ] as const;
 
-/* ─────────────────────── Carte — logements ───────────────────────
- * PLACEHOLDER — logements fictifs. Remplacez par vos vrais biens.
- * x / y : position sur la carte, en pourcentage (0 → 100).
+/* ─────────────────────── Carte — zone d'intervention ───────────────────────
+ * Villes affichées avec le logo NOVESYA. Ajoutez / retirez des communes ici.
+ * x / y : position sur la carte, en % (projection simplifiée de la longitude / latitude).
  */
-export type Property = {
-  id: string;
-  name: string;
-  area: string;
-  type: string;
-  guests: number;
-  bedrooms: number;
-  performance: string;
-  image: string;
-  x: number;
-  y: number;
-};
+export type Department = { id: "77" | "91" | "94"; name: string; detail: string };
 
-export const properties: Property[] = [
-  { id: "p1", name: "Appartement Lumière", area: "Centre historique", type: "Appartement T3", guests: 4, bedrooms: 2, performance: "Occupation indicative 84 %", image: images.properties.a, x: 46, y: 42 },
-  { id: "p2", name: "Studio Riviera", area: "Quartier gare", type: "Studio", guests: 2, bedrooms: 0, performance: "Occupation indicative 88 %", image: images.properties.b, x: 63, y: 55 },
-  { id: "p3", name: "Loft Atelier", area: "Rive droite", type: "Loft", guests: 4, bedrooms: 1, performance: "Occupation indicative 79 %", image: images.properties.c, x: 31, y: 30 },
-  { id: "p4", name: "Suite Jardin", area: "Quartier résidentiel", type: "Appartement T2", guests: 3, bedrooms: 1, performance: "Occupation indicative 81 %", image: images.properties.d, x: 72, y: 28 },
-  { id: "p5", name: "Maison Horizon", area: "Commune voisine", type: "Maison", guests: 6, bedrooms: 3, performance: "Occupation indicative 74 %", image: images.properties.e, x: 22, y: 66 },
-  { id: "p6", name: "Duplex Canopée", area: "Bord de rivière", type: "Duplex", guests: 5, bedrooms: 2, performance: "Occupation indicative 83 %", image: images.properties.f, x: 54, y: 74 },
+export const departments: Department[] = [
+  { id: "91", name: "Essonne", detail: "Tout le département" },
+  { id: "77", name: "Seine-et-Marne", detail: "Sud du département" },
+  { id: "94", name: "Val-de-Marne", detail: "Communes proches de l'Essonne" },
+];
+
+export const towns: { name: string; dept: Department["id"]; x: number; y: number }[] = [
+  { name: "Évry-Courcouronnes", dept: "91", x: 39, y: 29 },
+  { name: "Corbeil-Essonnes", dept: "91", x: 44, y: 34 },
+  { name: "Massy", dept: "91", x: 22, y: 13 },
+  { name: "Brétigny-sur-Orge", dept: "91", x: 25, y: 34 },
+  { name: "Étampes", dept: "91", x: 11, y: 64 },
+  { name: "Melun", dept: "77", x: 61, y: 45 },
+  { name: "Fontainebleau", dept: "77", x: 65, y: 69 },
+  { name: "Montereau-Fault-Yonne", dept: "77", x: 89, y: 71 },
+  { name: "Nemours", dept: "77", x: 65, y: 90 },
+  { name: "Orly", dept: "94", x: 33, y: 10 },
+  { name: "Villeneuve-Saint-Georges", dept: "94", x: 41, y: 11 },
+  { name: "Choisy-le-Roi", dept: "94", x: 36, y: 5 },
 ];
 
 /* ─────────────────────── Témoignages ───────────────────────
@@ -163,11 +166,11 @@ export const goals = [
 export const faq = [
   {
     q: "Combien coûte NOVESYA ?",
-    a: "NOVESYA fonctionne à la commission, sans abonnement : 15 % avec la formule Essentielle et 20 % avec la formule Premium. Vous ne payez que lorsque votre logement génère des revenus.",
+    a: "Chaque logement est différent : nos conditions sont donc présentées personnellement. Laissez votre téléphone et votre e-mail sur la page « Nos formules », un conseiller NOVESYA vous contacte en privé sous 24h.",
   },
   {
-    q: "Comment fonctionne votre commission ?",
-    a: "La commission est calculée sur les revenus générés par les réservations de votre logement. Le détail de chaque séjour et de chaque commission apparaît dans votre suivi, pour une lecture parfaitement claire.",
+    q: "Quelle est la différence entre Essentielle et Premium ?",
+    a: "Essentielle couvre l'annonce, les réservations, les voyageurs, les prix et la coordination du ménage. Premium y ajoute l'accueil (check-in / check-out), le linge, les incidents, un reporting mensuel et un shooting photo professionnel offert.",
   },
   {
     q: "Qui gère les voyageurs ?",
@@ -183,7 +186,7 @@ export const faq = [
   },
   {
     q: "Dois-je fournir le linge ?",
-    a: "Avec la formule Premium, la gestion du linge est incluse. Avec la formule Essentielle, nous coordonnons le ménage et définissons ensemble l'organisation du linge la plus adaptée à votre logement.",
+    a: "Avec la formule Premium, la gestion du linge est incluse. Avec la formule Essentielle, nous définissons ensemble l'organisation du linge la plus adaptée à votre logement.",
   },
   {
     q: "Puis-je garder mon compte Airbnb ?",
@@ -199,6 +202,6 @@ export const faq = [
   },
   {
     q: "Dans quelles villes intervenez-vous ?",
-    a: `Nous intervenons actuellement sur ${site.zone.label.toLowerCase()}. Votre logement est situé ailleurs ? Contactez-nous : nous étudions chaque demande. [Zone à préciser par NOVESYA]`,
+    a: `Nous intervenons dans ${site.zone.label}. Votre logement est situé juste à côté ? Contactez-nous : nous étudions chaque demande.`,
   },
 ] as const;

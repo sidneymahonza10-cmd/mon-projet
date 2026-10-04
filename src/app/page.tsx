@@ -5,7 +5,7 @@ import { BeforeAfter } from "@/components/sections/BeforeAfter";
 import { Shooting } from "@/components/sections/Shooting";
 import { Services } from "@/components/sections/Services";
 import { Dashboard } from "@/components/sections/Dashboard";
-import { Pricing } from "@/components/sections/Pricing";
+import { Formulas } from "@/components/sections/Formulas";
 import { Calculator } from "@/components/sections/Calculator";
 import { Stats } from "@/components/sections/Stats";
 import { MapSection } from "@/components/sections/MapSection";
@@ -13,8 +13,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { FAQ } from "@/components/sections/FAQ";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { ContactForm } from "@/components/sections/ContactForm";
-import { faq } from "@/data/content";
-import { plans } from "@/data/content";
+import { faq, plans } from "@/data/content";
 import { site } from "@/config/site";
 
 export default function Home() {
@@ -31,21 +30,13 @@ export default function Home() {
       image: `${site.url}/opengraph-image`,
       sameAs: [site.contact.instagram],
       slogan: site.slogan,
-      areaServed: site.zone.cities,
-      makesOffer: plans.map((p) => ({
-        "@type": "Offer",
-        name: `Formule ${p.name}`,
-        description: `${p.rate} % de commission sur les revenus générés par les réservations.`,
-      })),
+      areaServed: site.zone.cities.map((name) => ({ "@type": "AdministrativeArea", name })),
+      makesOffer: plans.map((p) => ({ "@type": "Offer", name: `Formule ${p.name}`, description: p.pitch })),
     },
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: faq.map((f) => ({
-        "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
-      })),
+      mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
     },
   ];
 
@@ -59,7 +50,7 @@ export default function Home() {
       <Shooting />
       <Services />
       <Dashboard />
-      <Pricing />
+      <Formulas />
       <Calculator />
       <Stats />
       <MapSection />

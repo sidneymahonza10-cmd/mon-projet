@@ -2,106 +2,103 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { BedDouble, MapPin, TrendingUp, Users } from "lucide-react";
-import { properties } from "@/data/content";
-import { site } from "@/config/site";
+import { ArrowRight, MapPin } from "lucide-react";
+import { departments, towns, type Department } from "@/data/content";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { SmartImage } from "@/components/ui/SmartImage";
 import { Reveal } from "@/components/ui/Reveal";
+import { LogoMark } from "@/components/ui/Logo";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { cn } from "@/lib/cn";
 
-/**
- * Carte stylisée de la zone d'intervention.
- * PLACEHOLDER : le fond est une illustration ; les logements viennent de src/data/content.ts.
- * Pour une vraie carte, ce composant peut être remplacé par Mapbox / Leaflet en gardant les mêmes données.
- */
+type DeptId = Department["id"];
+
+/** Zone d'intervention : le logo NOVESYA posé sur les villes couvertes (77 sud, 91, 94). */
 export function MapSection() {
-  const [selected, setSelected] = useState(properties[0].id);
-  const p = properties.find((x) => x.id === selected) ?? properties[0];
+  const [active, setActive] = useState<DeptId>("91");
+  const dept = departments.find((d) => d.id === active)!;
+  const list = towns.filter((t) => t.dept === active);
 
   return (
-    <section aria-labelledby="zone-title" className="relative z-10 -mt-8 overflow-hidden rounded-t-[2rem] bg-night py-28 sm:-mt-10 sm:rounded-t-[2.75rem] sm:py-36">
+    <section aria-labelledby="zone-title" className="relative z-10 -mt-10 overflow-hidden rounded-t-[2.5rem] bg-sage-soft py-28 sm:rounded-t-[3.5rem] sm:py-36">
       <div className="container-x">
-        <SectionHeading
-          id="zone-title"
-          title="Notre zone"
-          accent="d'intervention."
-          description={`${site.zone.label} — sélectionnez un logement pour découvrir son profil. Logements présentés à titre d'exemple.`}
-        />
+        <SectionHeading id="zone-title" title="Où nous" accent="intervenons." description="NOVESYA est implantée au sud de Paris : en Essonne, dans le sud de la Seine-et-Marne et dans le Val-de-Marne proche de l'Essonne." />
 
-        <Reveal className="mt-14 grid gap-5 lg:grid-cols-[1.55fr_1fr]" y={40}>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-line-dark bg-[#121214] sm:aspect-[16/11]">
-            <CityIllustration />
-            <span className="absolute left-4 top-4 rounded-full bg-ink/70 px-3 py-1.5 text-[0.7rem] text-mist backdrop-blur-md">
-              Zone à personnaliser
-            </span>
-
-            {properties.map((prop) => {
-              const on = prop.id === selected;
+        <Reveal className="mt-14 grid gap-5 lg:grid-cols-[1.55fr_1fr]" y={50}>
+          <div className="relative aspect-[16/11] overflow-hidden rounded-[2rem] border border-hairline bg-porcelain">
+            <ZoneMap active={active} onSelect={setActive} />
+            {towns.map((t, i) => {
+              const on = t.dept === active;
               return (
-                <button
-                  key={prop.id}
+                <motion.button
+                  key={t.name}
                   type="button"
-                  onClick={() => setSelected(prop.id)}
-                  aria-pressed={on}
-                  aria-label={`${prop.name}, ${prop.type}, ${prop.area}`}
-                  className="group absolute -translate-x-1/2 -translate-y-1/2 p-3"
-                  style={{ left: `${prop.x}%`, top: `${prop.y}%` }}
+                  onClick={() => setActive(t.dept)}
+                  aria-label={`${t.name} (${t.dept})`}
+                  className="group absolute -translate-x-1/2 -translate-y-1/2"
+                  style={{ left: `${t.x}%`, top: `${t.y}%` }}
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + i * 0.06, type: "spring", stiffness: 320, damping: 16 }}
                 >
-                  <span className={cn("absolute inset-0 m-auto size-5 rounded-full bg-gold/50", on ? "animate-ping-soft" : "hidden")} />
-                  <span
-                    className={cn(
-                      "relative flex items-center gap-2 rounded-full border transition-all duration-500",
-                      on ? "border-gold bg-gold px-3 py-1.5 text-ink" : "border-paper/30 bg-ink/80 p-1.5 text-paper hover:border-gold hover:bg-ink",
-                    )}
-                  >
-                    <MapPin className="size-3.5" />
-                    {on && <span className="whitespace-nowrap text-xs font-medium">{prop.name}</span>}
+                  {on && <span aria-hidden="true" className="absolute inset-0 rounded-full bg-caramel/40 animate-ping-soft" />}
+                  <span className={cn("relative grid place-items-center rounded-full border shadow-[0_8px_20px_-8px_rgba(42,32,26,0.55)] transition-all duration-500", on ? "size-7 border-caramel bg-espresso text-sand sm:size-10" : "size-5 border-hairline bg-porcelain text-caramel sm:size-7")}>
+                    <LogoMark className={on ? "h-4 sm:h-5" : "h-3 sm:h-3.5"} />
                   </span>
-                </button>
+                  <span className={cn("pointer-events-none absolute left-1/2 top-full mt-1 hidden -translate-x-1/2 whitespace-nowrap rounded-full px-2 py-0.5 text-[0.68rem] font-medium transition-opacity duration-300 sm:block", on ? "bg-porcelain/95 text-espresso opacity-100" : "text-taupe opacity-0 group-hover:opacity-100")}>
+                    {t.name}
+                  </span>
+                </motion.button>
               );
             })}
+            <span className="absolute left-4 top-4 hidden items-center gap-2 rounded-full bg-porcelain/90 px-3 py-1.5 text-[0.7rem] text-taupe shadow-sm sm:flex">
+              <LogoMark className="h-3.5 text-caramel" /> Villes où NOVESYA intervient
+            </span>
           </div>
 
-          <div className="relative min-h-[26rem] overflow-hidden rounded-[1.75rem] border border-line-dark bg-anthracite/60" aria-live="polite">
-            <AnimatePresence mode="wait">
-              <motion.article
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                className="flex h-full flex-col"
-              >
-                <motion.div initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0% 0)" }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-                  <SmartImage src={p.image} alt={`${p.name} — photo d'exemple`} className="aspect-[16/10] w-full" />
+          <div className="flex flex-col gap-3">
+            <div role="tablist" aria-label="Départements" className="grid grid-cols-3 gap-2">
+              {departments.map((d) => (
+                <button
+                  key={d.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={d.id === active}
+                  onClick={() => setActive(d.id)}
+                  className={cn("relative rounded-2xl border px-3 py-4 text-left transition-colors duration-300", d.id === active ? "border-espresso text-porcelain" : "border-hairline bg-porcelain text-espresso hover:border-dune")}
+                >
+                  {d.id === active && <motion.span layoutId="dept-pill" className="absolute inset-0 rounded-2xl bg-espresso" transition={{ type: "spring", stiffness: 380, damping: 32 }} />}
+                  <span className="relative block font-display text-3xl leading-none">{d.id}</span>
+                  <span className={cn("relative mt-1 block text-xs", d.id === active ? "text-sand" : "text-taupe")}>{d.name}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="relative flex-1 overflow-hidden rounded-[2rem] bg-porcelain p-7 shadow-[0_40px_80px_-60px_rgba(42,32,26,0.6)]" role="tabpanel" aria-live="polite">
+              <AnimatePresence mode="wait">
+                <motion.div key={active} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
+                  <p className="text-sm text-caramel-deep">{dept.detail}</p>
+                  <h3 className="mt-1 font-display text-4xl text-espresso">
+                    {dept.name} <span className="text-dune">· {dept.id}</span>
+                  </h3>
+                  <ul className="mt-6 flex flex-wrap gap-2">
+                    {list.map((t, i) => (
+                      <motion.li key={t.name} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.05 }} className="flex items-center gap-1.5 rounded-full bg-cream px-3 py-1.5 text-sm text-espresso">
+                        <MapPin className="size-3.5 text-caramel" /> {t.name}
+                      </motion.li>
+                    ))}
+                    <li className="rounded-full border border-dashed border-dune px-3 py-1.5 text-sm text-taupe">et communes voisines</li>
+                  </ul>
                 </motion.div>
-                <div className="flex flex-1 flex-col p-6 sm:p-7">
-                  <p className="text-sm text-smoke">{p.area}</p>
-                  <h3 className="mt-1 font-display text-3xl text-paper">{p.name}</h3>
-                  <dl className="mt-5 grid grid-cols-3 gap-3 text-sm">
-                    <div className="rounded-xl border border-line-dark p-3">
-                      <dt className="sr-only">Type</dt>
-                      <dd className="text-paper">{p.type}</dd>
-                    </div>
-                    <div className="flex items-center gap-2 rounded-xl border border-line-dark p-3 text-paper">
-                      <Users className="size-4 text-gold" />
-                      <dt className="sr-only">Voyageurs</dt>
-                      <dd>{p.guests} pers.</dd>
-                    </div>
-                    <div className="flex items-center gap-2 rounded-xl border border-line-dark p-3 text-paper">
-                      <BedDouble className="size-4 text-gold" />
-                      <dt className="sr-only">Chambres</dt>
-                      <dd>{p.bedrooms === 0 ? "Studio" : `${p.bedrooms} ch.`}</dd>
-                    </div>
-                  </dl>
-                  <p className="mt-auto flex items-center gap-2 pt-6 text-gold-soft">
-                    <TrendingUp className="size-4" /> {p.performance}
-                  </p>
-                  <p className="mt-1 text-xs text-smoke">Performance indicative — exemple non contractuel.</p>
-                </div>
-              </motion.article>
-            </AnimatePresence>
+              </AnimatePresence>
+              <div className="mt-8 border-t border-hairline pt-6">
+                <p className="text-taupe">Votre logement se situe dans la zone, ou juste à côté ?</p>
+                <MagneticButton href="#contact" variant="primary" className="mt-4">
+                  Parlons-en
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </MagneticButton>
+              </div>
+            </div>
           </div>
         </Reveal>
       </div>
@@ -109,37 +106,50 @@ export function MapSection() {
   );
 }
 
-function CityIllustration() {
+/** Carte stylisée (tracés simplifiés, non cartographiques). */
+function ZoneMap({ active, onSelect }: { active: DeptId; onSelect: (d: DeptId) => void }) {
+  const fill = (id: DeptId, base: string, on: string) => (id === active ? on : base);
+  const regions: { id: DeptId; d: string; base: string; on: string }[] = [
+    { id: "94", d: "M150 0h330l-20 70-80 30-90-10-90 20-60-30Z", base: "#e7e9df", on: "#d3dac8" },
+    { id: "91", d: "M90 85l60-5 90 10 90-10 80-20 30 70 20 100-40 60-30 90-50 80-120 70-110-10-60-90 20-120-40-90Z", base: "#f1eadf", on: "#e6d6bb" },
+    { id: "77", d: "M460 70l120-40 140 30 80 60v420H560l-80-60-40-110 30-90 20-110Z", base: "#f3ede3", on: "#e6d6bb" },
+  ];
   return (
-    <svg viewBox="0 0 800 550" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+    <svg viewBox="0 0 800 550" className="absolute inset-0 h-full w-full" aria-hidden="true">
       <defs>
-        <radialGradient id="map-glow" cx="50%" cy="48%" r="45%">
-          <stop offset="0%" stopColor="#c19a5b" stopOpacity="0.14" />
-          <stop offset="100%" stopColor="#c19a5b" stopOpacity="0" />
-        </radialGradient>
-        <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M40 0H0V40" fill="none" stroke="#1f2024" strokeWidth="1" />
+        <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1" fill="#dcc9a8" />
         </pattern>
       </defs>
-      <rect width="800" height="550" fill="url(#map-grid)" />
-      {/* Parcs */}
-      <path d="M90 90c40-30 120-20 140 20s-10 80-60 85-110-60-80-105Z" fill="#1a1d1a" />
-      <path d="M560 380c50-20 130 0 140 40s-60 70-110 60-80-80-30-100Z" fill="#1a1d1a" />
-      {/* Rivière */}
-      <path d="M-20 360C120 330 200 420 330 390S520 250 640 270 760 360 830 330" fill="none" stroke="#1d2328" strokeWidth="34" strokeLinecap="round" />
-      <path d="M-20 360C120 330 200 420 330 390S520 250 640 270 760 360 830 330" fill="none" stroke="#232b31" strokeWidth="2" strokeDasharray="2 10" />
-      {/* Grands axes */}
-      <g stroke="#2a2b30" strokeWidth="3" fill="none">
-        <path d="M0 230 800 180" />
-        <path d="M380 0 420 550" />
-        <path d="M120 550 640 0" />
-        <path d="M0 470C200 440 300 480 800 450" />
+      <rect width="800" height="550" fill="#f6f1e9" />
+      <rect width="800" height="550" fill="url(#dots)" opacity="0.6" />
+      {regions.map((r) => (
+        <path
+          key={r.id}
+          d={r.d}
+          fill={fill(r.id, r.base, r.on)}
+          stroke={r.id === active ? "#8a5d28" : "#c7ae86"}
+          strokeWidth={r.id === active ? 2.5 : 1.2}
+          onClick={() => onSelect(r.id)}
+          style={{ cursor: "pointer", transition: "fill .5s, stroke .5s" }}
+        />
+      ))}
+      <path d="M480 330c40-30 110-25 130 10s-20 70-70 70-90-50-60-80Z" fill="#dfe3d6" opacity="0.8" />
+      <path d="M800 380C760 390 735 395 720 390S640 340 600 300 520 250 490 248 400 200 345 182 300 160 275 150 290 90 300 55 320 20 330 0" fill="none" stroke="#c9dde0" strokeWidth="14" strokeLinecap="round" />
+      <g fontFamily="var(--font-sans)" fontSize="13" letterSpacing="3" fill="#6b5f55">
+        <text x="360" y="36">VAL-DE-MARNE · 94</text>
+        <text x="110" y="420">ESSONNE · 91</text>
+        <text x="560" y="130">SEINE-ET-MARNE SUD · 77</text>
       </g>
-      <g stroke="#232428" strokeWidth="1.5" fill="none">
-        <path d="M0 140 800 120M0 300 800 280M220 0 260 550M560 0 600 550M0 60 800 40" />
-      </g>
-      <ellipse cx="400" cy="270" rx="260" ry="200" fill="url(#map-glow)" />
-      <ellipse cx="400" cy="270" rx="300" ry="215" fill="none" stroke="#c19a5b" strokeOpacity="0.35" strokeDasharray="4 8" />
+      <text x="300" y="16" fontFamily="var(--font-sans)" fontSize="11" fill="#6b5f55">
+        ↑ Paris
+      </text>
+      <text x="530" y="380" fontFamily="var(--font-display)" fontStyle="italic" fontSize="14" fill="#6f7e66">
+        Forêt de Fontainebleau
+      </text>
+      <text x="292" y="120" fontFamily="var(--font-display)" fontStyle="italic" fontSize="13" fill="#7fa3aa" transform="rotate(-70 292 120)">
+        La Seine
+      </text>
     </svg>
   );
 }

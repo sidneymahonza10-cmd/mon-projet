@@ -3,54 +3,49 @@
 @import "@fontsource-variable/eb-garamond/wght-italic.css";
 
 /*
- * NOVESYA — design tokens
- * Luxury Hospitality × Real Estate × Technology
- * Noir profond · blanc cassé · champagne · anthracite · or discret
+ * NOVESYA — « Maison claire »
+ * Palette lumineuse issue de la brochure : crème, lin, sable, caramel,
+ * brun du logo, sauge — et un vert forêt profond réservé aux moments forts.
  */
 @theme {
-  --color-ink: #0a0a0b;
-  --color-night: #111113;
-  --color-anthracite: #1b1c1f;
-  --color-graphite: #2a2b30;
-  --color-line-dark: #2e2f34;
-  --color-mist: #a8a398; /* texte secondaire sur fond sombre (contraste ≥ 7:1) */
-  --color-smoke: #8c877c; /* texte tertiaire sur fond sombre (≥ 5:1) */
-
-  --color-paper: #fbfaf6;
-  --color-ivory: #f4f1ea;
-  --color-linen: #ebe5d9;
-  --color-champagne: #e2d4bb;
-  --color-sand: #c8b38e;
-  --color-stone: #5c5850; /* texte secondaire sur fond clair (≥ 6:1) */
-  --color-line-light: #ddd6c8;
-
-  --color-gold: #c19a5b; /* accents sur fond sombre */
-  --color-gold-soft: #d8bd8a;
-  --color-gold-deep: #85653a; /* accents textuels sur fond clair (≥ 4.5:1) */
+  --color-cream: #f6f1e9; /* fond principal */
+  --color-porcelain: #fdfbf7; /* cartes */
+  --color-linen: #ece3d5; /* fonds secondaires */
+  --color-sand: #dcc9a8;
+  --color-dune: #c7ae86;
+  --color-caramel: #b8874a; /* accent (aplats, filets, icônes) */
+  --color-caramel-deep: #8a5d28; /* accent textuel (≥ 4.5:1 sur crème) */
+  --color-espresso: #2a201a; /* texte principal */
+  --color-cocoa: #4a3328; /* brun du logo */
+  --color-taupe: #6b5f55; /* texte secondaire (≥ 5.5:1 sur crème) */
+  --color-hairline: #e2d7c6;
+  --color-sage: #8e9a82;
+  --color-sage-soft: #dfe3d6;
+  --color-forest: #24321f; /* aplats profonds */
+  --color-forest-soft: #3a4a33;
+  --color-mint-ink: #d9dfcf; /* texte secondaire sur forêt */
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: "EB Garamond Variable", "EB Garamond", Georgia, serif;
 
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-marquee: marquee var(--marquee-duration, 38s) linear infinite;
+  --animate-ping-soft: ping-soft 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-spin-slow: spin 28s linear infinite;
 
-  --animate-scroll-cue: scroll-cue 2.4s var(--ease-out-quint) infinite;
-  --animate-ping-soft: ping-soft 2.8s var(--ease-out-quint) infinite;
-
-  @keyframes scroll-cue {
-    0% {
-      transform: translateY(-100%);
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
     }
-    60%,
-    100% {
-      transform: translateY(220%);
+    to {
+      transform: translateX(-50%);
     }
   }
   @keyframes ping-soft {
     0% {
       transform: scale(1);
-      opacity: 0.55;
+      opacity: 0.5;
     }
     80%,
     100% {
@@ -58,20 +53,45 @@
       opacity: 0;
     }
   }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+/* Sécurité : l'intro ne peut jamais masquer le site si le JavaScript échoue */
+.preloader {
+  animation: preloader-failsafe 0s linear 4.5s forwards;
+}
+@keyframes preloader-failsafe {
+  to {
+    visibility: hidden;
+  }
 }
 
 @layer base {
   html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 6rem;
     -webkit-text-size-adjust: 100%;
-    color-scheme: dark light;
+    color-scheme: light;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
     *,
     *::before,
     *::after {
@@ -82,10 +102,9 @@
   }
 
   body {
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: var(--color-cream);
+    color: var(--color-espresso);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -93,12 +112,12 @@
   }
 
   ::selection {
-    background: var(--color-gold);
-    color: var(--color-ink);
+    background: var(--color-caramel);
+    color: var(--color-porcelain);
   }
 
   :focus-visible {
-    outline: 1.5px solid var(--color-gold);
+    outline: 1.5px solid var(--color-caramel-deep);
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -106,7 +125,7 @@
   input,
   select,
   textarea {
-    caret-color: var(--color-gold);
+    caret-color: var(--color-caramel-deep);
   }
 
   a {
@@ -119,40 +138,43 @@
   h3 {
     text-wrap: balance;
   }
-
   p {
     text-wrap: pretty;
   }
 
-  /* Barre de défilement aux couleurs de la marque */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-graphite) var(--color-ink);
+    scrollbar-color: var(--color-dune) var(--color-cream);
   }
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-ink);
+    background: var(--color-cream);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-graphite);
+    background: var(--color-sand);
     border-radius: 999px;
-    border: 2px solid var(--color-ink);
+    border: 2px solid var(--color-cream);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-gold);
+    background: var(--color-caramel);
   }
-}
 
-/* Sécurité : l'intro ne peut jamais masquer le site si le JavaScript échoue */
-.preloader {
-  animation: preloader-failsafe 0s linear 4s forwards;
-}
-@keyframes preloader-failsafe {
-  to {
-    visibility: hidden;
+  @media (pointer: fine) {
+    html.has-cursor,
+    html.has-cursor a,
+    html.has-cursor button,
+    html.has-cursor label,
+    html.has-cursor [role="slider"] {
+      cursor: none;
+    }
+    html.has-cursor input,
+    html.has-cursor select,
+    html.has-cursor textarea {
+      cursor: text;
+    }
   }
 }
 
@@ -160,7 +182,7 @@
   .font-display {
     font-family: var(--font-display);
     font-optical-sizing: auto;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.018em;
   }
 
   .num {
@@ -169,7 +191,7 @@
 
   .container-x {
     width: 100%;
-    max-width: 84rem;
+    max-width: 86rem;
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
@@ -184,120 +206,96 @@
     }
   }
 
-  /* Verre dépoli — utilisé uniquement là où il sépare un contenu d'une image */
-  .glass-dark {
-    background: color-mix(in oklab, var(--color-ink) 58%, transparent);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    backdrop-filter: blur(18px) saturate(140%);
-    border: 1px solid color-mix(in oklab, var(--color-paper) 10%, transparent);
-  }
-  .glass-light {
-    background: color-mix(in oklab, var(--color-paper) 72%, transparent);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
-    backdrop-filter: blur(18px) saturate(140%);
-    border: 1px solid color-mix(in oklab, var(--color-paper) 60%, transparent);
+  /* Verre dépoli clair — uniquement au-dessus d'une image ou au scroll */
+  .glass {
+    background: color-mix(in oklab, var(--color-porcelain) 70%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid color-mix(in oklab, var(--color-porcelain) 70%, transparent);
   }
 
-  /* Grain très léger pour donner de la matière aux aplats sombres */
+  /* Grain très léger : matière papier */
   .grain::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.05;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
 
-  /* Champs de formulaire */
   .field {
     width: 100%;
-    min-height: 3.25rem;
-    border-radius: 0.875rem;
-    padding: 0.85rem 1rem;
+    min-height: 3.35rem;
+    border-radius: 0.95rem;
+    padding: 0.9rem 1.05rem;
     font-size: 1rem;
+    background: var(--color-porcelain);
+    border: 1px solid var(--color-hairline);
+    color: var(--color-espresso);
     transition:
-      border-color 0.25s var(--ease-out-quint),
-      background-color 0.25s var(--ease-out-quint),
-      box-shadow 0.25s var(--ease-out-quint);
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      background-color 0.25s ease;
   }
-  .field-dark {
-    background: color-mix(in oklab, var(--color-paper) 4%, transparent);
-    border: 1px solid var(--color-line-dark);
-    color: var(--color-paper);
+  .field::placeholder {
+    color: #8f8378;
   }
-  .field-dark::placeholder {
-    color: var(--color-smoke);
+  .field:hover {
+    border-color: var(--color-dune);
   }
-  .field-dark:hover {
-    border-color: color-mix(in oklab, var(--color-gold) 40%, var(--color-line-dark));
-  }
-  .field-dark:focus {
+  .field:focus {
     outline: none;
-    border-color: var(--color-gold);
-    background: color-mix(in oklab, var(--color-paper) 7%, transparent);
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-gold) 16%, transparent);
-  }
-  .field-light {
-    background: var(--color-paper);
-    border: 1px solid var(--color-line-light);
-    color: var(--color-ink);
-  }
-  .field-light::placeholder {
-    color: #8a857a;
-  }
-  .field-light:hover {
-    border-color: var(--color-sand);
-  }
-  .field-light:focus {
-    outline: none;
-    border-color: var(--color-gold-deep);
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-gold) 18%, transparent);
+    border-color: var(--color-caramel-deep);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-caramel) 18%, transparent);
   }
   .field[aria-invalid="true"] {
-    border-color: #c2665a;
+    border-color: #b4533f;
   }
   select.field {
     appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23c19a5b' stroke-width='1.5'><path d='M1 1.5l5 5 5-5'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%238a5d28' stroke-width='1.5'><path d='M1 1.5l5 5 5-5'/></svg>");
     background-repeat: no-repeat;
-    background-position: right 1rem center;
-    padding-right: 2.5rem;
-  }
-  select.field option {
-    color: #0a0a0b;
-    background: #fbfaf6;
+    background-position: right 1.05rem center;
+    padding-right: 2.6rem;
   }
 
-  /* Curseur des sliders natifs */
   .range {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 2px;
+    height: 3px;
     background: linear-gradient(
       to right,
-      var(--color-gold) 0%,
-      var(--color-gold) var(--fill, 50%),
-      var(--color-line-dark) var(--fill, 50%)
+      var(--color-caramel) 0%,
+      var(--color-caramel) var(--fill, 50%),
+      var(--color-hairline) var(--fill, 50%)
     );
     border-radius: 999px;
     cursor: pointer;
   }
+  /* Poignée personnalisée : le monogramme NOVESYA (toit + N) */
   .range::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 22px;
-    height: 22px;
+    width: 40px;
+    height: 40px;
     border-radius: 999px;
-    background: var(--color-paper);
-    border: 5px solid var(--color-gold);
-    box-shadow: 0 4px 14px rgb(0 0 0 / 0.45);
+    background: var(--color-porcelain) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 46'><path d='M3 19.5 24 3l21 16.5' fill='none' stroke='%23b8874a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><g fill='%234a3328'><rect x='12.2' y='17' width='2.6' height='25.5'/><rect x='33.2' y='17' width='2.6' height='25.5'/><path d='M12.2 17h4.6l19 25.5h-4.6z'/><rect x='9.6' y='17' width='7.6' height='1.8'/><rect x='9.6' y='40.7' width='7.6' height='1.8'/><rect x='30.8' y='17' width='7.6' height='1.8'/></g></svg>") center / 24px no-repeat;
+    border: 2px solid var(--color-caramel);
+    box-shadow: 0 8px 20px rgb(74 51 40 / 0.28);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .range:active::-webkit-slider-thumb,
+  .range:hover::-webkit-slider-thumb {
+    transform: scale(1.12);
   }
   .range::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
+    width: 36px;
+    height: 36px;
     border-radius: 999px;
-    background: var(--color-paper);
-    border: 5px solid var(--color-gold);
+    background: var(--color-porcelain) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 46'><path d='M3 19.5 24 3l21 16.5' fill='none' stroke='%23b8874a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><g fill='%234a3328'><rect x='12.2' y='17' width='2.6' height='25.5'/><rect x='33.2' y='17' width='2.6' height='25.5'/><path d='M12.2 17h4.6l19 25.5h-4.6z'/><rect x='9.6' y='17' width='7.6' height='1.8'/><rect x='9.6' y='40.7' width='7.6' height='1.8'/><rect x='30.8' y='17' width='7.6' height='1.8'/></g></svg>") center / 22px no-repeat;
+    border: 2px solid var(--color-caramel);
+    box-shadow: 0 8px 20px rgb(74 51 40 / 0.28);
   }
 }

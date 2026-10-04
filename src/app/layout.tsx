@@ -7,7 +7,9 @@ import { Providers } from "@/components/layout/Providers";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
-import { CursorGlow } from "@/components/layout/CursorGlow";
+import { Cursor } from "@/components/layout/Cursor";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { Preloader } from "@/components/layout/Preloader";
 
 export const metadata: Metadata = {
@@ -38,24 +40,26 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0b",
-  colorScheme: "dark",
+  themeColor: "#f6f1e9",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body>
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-paper focus:px-5 focus:py-3 focus:text-ink">
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-espresso focus:px-5 focus:py-3 focus:text-porcelain">
           Aller au contenu
         </a>
         <Providers>
           <Preloader />
+          <SmoothScroll />
+          <ScrollProgress />
           <Header />
           <main id="main">{children}</main>
           <Footer />
           <WhatsAppButton />
-          <CursorGlow />
+          <Cursor />
         </Providers>
       </body>
     </html>

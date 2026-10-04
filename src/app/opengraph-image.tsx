@@ -17,16 +17,16 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 80,
-          background: "radial-gradient(circle at 80% 10%, #3a2f20 0%, #0a0a0b 55%)",
-          color: "#fbfaf6",
+          background: "radial-gradient(circle at 80% 10%, #ece3d5 0%, #f6f1e9 60%)",
+          color: "#2a201a",
         }}
       >
-        <div style={{ display: "flex", fontSize: 34, letterSpacing: 10, color: "#d8bd8a" }}>NOVESYA</div>
+        <div style={{ display: "flex", fontSize: 34, letterSpacing: 10, color: "#8a5d28" }}>NOVESYA</div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 76, lineHeight: 1.05 }}>Votre logement travaille.</div>
-          <div style={{ fontSize: 76, lineHeight: 1.05, color: "#e2d4bb", fontStyle: "italic" }}>NOVESYA s&apos;occupe du reste.</div>
+          <div style={{ fontSize: 76, lineHeight: 1.05, color: "#8a5d28", fontStyle: "italic" }}>NOVESYA s&apos;occupe du reste.</div>
         </div>
-        <div style={{ display: "flex", fontSize: 28, color: "#a8a398" }}>Conciergerie Airbnb premium</div>
+        <div style={{ display: "flex", fontSize: 28, color: "#6b5f55" }}>Conciergerie Airbnb premium</div>
       </div>
     ),
     size,

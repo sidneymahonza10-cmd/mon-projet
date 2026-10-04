@@ -14,16 +14,16 @@ export function WhatsAppButton() {
       aria-label="Nous écrire sur WhatsApp — message d'estimation prérempli"
       initial={{ opacity: 0, scale: 0.6, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ delay: 2.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ delay: 2.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ scale: 1.06 }}
       whileTap={{ scale: 0.95 }}
       className="group fixed bottom-5 right-5 z-40 flex items-center gap-3 sm:bottom-7 sm:right-7"
     >
-      <span className="pointer-events-none hidden translate-x-2 rounded-full bg-paper px-4 py-2 text-sm font-medium text-ink opacity-0 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block">
+      <span className="pointer-events-none hidden translate-x-2 rounded-full bg-porcelain px-4 py-2 text-sm font-medium text-espresso opacity-0 shadow-[0_12px_30px_-12px_rgba(42,32,26,0.45)] transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block">
         Une question ? Écrivez-nous
       </span>
-      <span className="relative grid size-14 place-items-center rounded-full bg-[#1f3d2e] text-paper shadow-[0_14px_34px_-10px_rgba(0,0,0,0.7)] ring-1 ring-paper/15">
-        <span aria-hidden="true" className="absolute inset-0 rounded-full bg-[#2b5a42] animate-ping-soft" />
+      <span className="relative grid size-14 place-items-center rounded-full bg-forest text-porcelain shadow-[0_16px_34px_-12px_rgba(36,50,31,0.7)]">
+        <span aria-hidden="true" className="absolute inset-0 rounded-full bg-sage animate-ping-soft" />
         <WhatsAppIcon className="relative size-6" />
       </span>
     </motion.a>

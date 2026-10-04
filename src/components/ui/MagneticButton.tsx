@@ -4,14 +4,30 @@ import { useRef, type ReactNode } from "react";
 import { motion, useReducedMotion, useSpring } from "framer-motion";
 import { cn } from "@/lib/cn";
 
-type Variant = "gold" | "light" | "ghost-dark" | "ghost-light" | "dark";
+type Variant = "primary" | "caramel" | "ghost" | "light" | "ghost-light";
 
 const variants: Record<Variant, string> = {
-  gold: "bg-gold text-ink hover:bg-gold-soft shadow-[0_10px_30px_-12px_rgba(193,154,91,0.7)]",
-  light: "bg-paper text-ink hover:bg-white shadow-[0_10px_30px_-14px_rgba(0,0,0,0.6)]",
-  dark: "bg-ink text-paper hover:bg-anthracite shadow-[0_12px_30px_-14px_rgba(10,10,11,0.55)]",
-  "ghost-dark": "border border-paper/25 text-paper hover:border-paper/60 hover:bg-paper/5",
-  "ghost-light": "border border-ink/20 text-ink hover:border-ink/50 hover:bg-ink/[0.03]",
+  primary: "bg-espresso text-porcelain shadow-[0_14px_30px_-14px_rgba(42,32,26,0.6)]",
+  caramel: "bg-caramel text-porcelain shadow-[0_14px_30px_-12px_rgba(184,135,74,0.7)]",
+  light: "bg-porcelain text-espresso shadow-[0_14px_30px_-14px_rgba(0,0,0,0.35)]",
+  ghost: "border border-espresso/20 text-espresso hover:border-espresso/60",
+  "ghost-light": "border border-porcelain/40 text-porcelain hover:border-porcelain",
+};
+
+/** Calque de remplissage qui monte au survol (effet « rideau ») */
+const fills: Record<Variant, string> = {
+  primary: "bg-caramel",
+  caramel: "bg-espresso",
+  light: "bg-sand",
+  ghost: "bg-espresso",
+  "ghost-light": "bg-porcelain",
+};
+const hoverText: Record<Variant, string> = {
+  primary: "group-hover:text-porcelain",
+  caramel: "group-hover:text-porcelain",
+  light: "group-hover:text-espresso",
+  ghost: "group-hover:text-porcelain",
+  "ghost-light": "group-hover:text-espresso",
 };
 
 type CommonProps = {
@@ -19,20 +35,18 @@ type CommonProps = {
   variant?: Variant;
   size?: "md" | "lg";
   className?: string;
-  /** Intensité de l'effet magnétique (0 = désactivé) */
   strength?: number;
 };
-
 type AsLink = CommonProps & { href: string; target?: string; rel?: string; onClick?: () => void; type?: never; disabled?: never };
 type AsButton = CommonProps & { href?: never; type?: "button" | "submit"; onClick?: () => void; disabled?: boolean };
 
-/** Bouton premium avec effet magnétique léger au survol (souris uniquement). */
+/** Bouton premium : magnétisme léger + remplissage qui monte au survol. */
 export function MagneticButton(props: AsLink | AsButton) {
-  const { children, variant = "gold", size = "md", className, strength = 0.25 } = props;
+  const { children, variant = "primary", size = "md", className, strength = 0.28 } = props;
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const x = useSpring(0, { stiffness: 220, damping: 16, mass: 0.4 });
-  const y = useSpring(0, { stiffness: 220, damping: 16, mass: 0.4 });
+  const x = useSpring(0, { stiffness: 220, damping: 15, mass: 0.4 });
+  const y = useSpring(0, { stiffness: 220, damping: 15, mass: 0.4 });
 
   function onMove(e: React.PointerEvent) {
     if (reduce || e.pointerType !== "mouse" || !ref.current) return;
@@ -40,50 +54,36 @@ export function MagneticButton(props: AsLink | AsButton) {
     x.set((e.clientX - (r.left + r.width / 2)) * strength);
     y.set((e.clientY - (r.top + r.height / 2)) * strength);
   }
-  function onLeave() {
+  const onLeave = () => {
     x.set(0);
     y.set(0);
-  }
+  };
 
   const classes = cn(
-    "group relative inline-flex select-none items-center justify-center gap-2.5 rounded-full font-medium tracking-[-0.005em] transition-[background-color,border-color,color,box-shadow,opacity] duration-300 ease-out disabled:cursor-not-allowed disabled:opacity-45",
-    size === "lg" ? "min-h-14 px-7 text-[0.975rem]" : "min-h-12 px-6 text-[0.925rem]",
+    "group relative isolate inline-flex select-none items-center justify-center gap-2.5 overflow-hidden rounded-full font-medium tracking-[-0.005em] transition-[color,border-color,opacity,box-shadow] duration-500 disabled:pointer-events-none disabled:opacity-50",
+    size === "lg" ? "min-h-14 px-8 text-[0.98rem]" : "min-h-12 px-6 text-[0.92rem]",
     variants[variant],
+    hoverText[variant],
     className,
+  );
+  const inner = (
+    <>
+      <span aria-hidden="true" className={cn("absolute inset-0 -z-10 translate-y-[101%] rounded-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0", fills[variant])} />
+      {children}
+    </>
   );
 
   if ("href" in props && props.href) {
     return (
-      <motion.a
-        ref={ref as React.Ref<HTMLAnchorElement>}
-        href={props.href}
-        target={props.target}
-        rel={props.rel}
-        onClick={props.onClick}
-        onPointerMove={onMove}
-        onPointerLeave={onLeave}
-        style={{ x, y }}
-        whileTap={{ scale: 0.97 }}
-        className={classes}
-      >
-        {children}
+      <motion.a ref={ref as React.Ref<HTMLAnchorElement>} href={props.href} target={props.target} rel={props.rel} onClick={props.onClick} onPointerMove={onMove} onPointerLeave={onLeave} style={{ x, y }} whileTap={{ scale: 0.97 }} className={classes} data-cursor="hover">
+        {inner}
       </motion.a>
     );
   }
   const b = props as AsButton;
   return (
-    <motion.button
-      ref={ref as React.Ref<HTMLButtonElement>}
-      type={b.type ?? "button"}
-      onClick={b.onClick}
-      disabled={b.disabled}
-      onPointerMove={onMove}
-      onPointerLeave={onLeave}
-      style={{ x, y }}
-      whileTap={{ scale: 0.97 }}
-      className={classes}
-    >
-      {children}
+    <motion.button ref={ref as React.Ref<HTMLButtonElement>} type={b.type ?? "button"} onClick={b.onClick} disabled={b.disabled} onPointerMove={onMove} onPointerLeave={onLeave} style={{ x, y }} whileTap={{ scale: 0.97 }} className={classes} data-cursor="hover">
+      {inner}
     </motion.button>
   );
 }

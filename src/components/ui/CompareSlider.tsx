@@ -56,14 +56,14 @@ export function CompareSlider({ before, after, beforeLabel, afterLabel, classNam
         {before}
       </motion.div>
 
-      <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-ink/70 px-3.5 py-1.5 text-[0.7rem] font-medium tracking-[0.18em] text-paper backdrop-blur-md sm:left-6 sm:top-6">
+      <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-espresso/75 px-3.5 py-1.5 text-[0.7rem] font-medium tracking-[0.18em] text-porcelain backdrop-blur-md sm:left-6 sm:top-6">
         {beforeLabel}
       </span>
-      <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-paper/85 px-3.5 py-1.5 text-[0.7rem] font-medium tracking-[0.18em] text-ink backdrop-blur-md sm:right-6 sm:top-6">
+      <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-porcelain/90 px-3.5 py-1.5 text-[0.7rem] font-medium tracking-[0.18em] text-espresso backdrop-blur-md sm:right-6 sm:top-6">
         {afterLabel}
       </span>
 
-      <motion.div className="pointer-events-none absolute inset-y-0 w-px -translate-x-1/2 bg-paper/90 shadow-[0_0_24px_rgba(0,0,0,0.5)]" style={{ left }} />
+      <motion.div className="pointer-events-none absolute inset-y-0 w-px -translate-x-1/2 bg-porcelain shadow-[0_0_24px_rgba(42,32,26,0.4)]" style={{ left }} />
       <motion.div
         role="slider"
         tabIndex={0}
@@ -81,7 +81,7 @@ export function CompareSlider({ before, after, beforeLabel, afterLabel, classNam
           else return;
           e.preventDefault();
         }}
-        className="absolute top-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-paper/60 bg-paper/20 text-paper shadow-[0_12px_30px_-8px_rgba(0,0,0,0.6)] backdrop-blur-md transition-transform hover:scale-105"
+        className="absolute top-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-porcelain bg-porcelain/30 text-porcelain shadow-[0_12px_30px_-8px_rgba(0,0,0,0.6)] backdrop-blur-md transition-transform hover:scale-105"
         style={{ left }}
       >
         <MoveHorizontal className="size-5" />

@@ -17,4 +17,4 @@ export function introPlays(): boolean {
   return cached;
 }
 
-export const INTRO_DURATION = 1.5;
+export const INTRO_DURATION = 1.9;

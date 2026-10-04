@@ -13,7 +13,7 @@ type TiltCardProps = {
 };
 
 /** Carte avec très léger effet 3D et halo lumineux qui suit la souris. */
-export function TiltCard({ children, className, max = 5, glow = "rgba(216,189,138,0.16)" }: TiltCardProps) {
+export function TiltCard({ children, className, max = 5, glow = "rgba(184,135,74,0.16)" }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const rx = useSpring(0, { stiffness: 180, damping: 18 });
