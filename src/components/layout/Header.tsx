@@ -20,7 +20,7 @@ export function Header() {
   // Segment de route (ex. "formules") : identique côté serveur et navigateur, quelle que soit l'URL
   const segment = useSelectedLayoutSegment();
   const isHome = segment === null;
-  const isOn = (href: string) => (href.includes("#") ? isHome && active === idOf(href) : href === `/${segment}`);
+  const isOn = (href: string) => (href.includes("#") ? isHome && active === idOf(href) : href.replace(/^\.?\//, "").replace(/\.html$/, "") === segment);
 
   useEffect(() => {
     let last = window.scrollY;
