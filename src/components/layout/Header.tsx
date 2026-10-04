@@ -18,7 +18,11 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("accueil");
   const pathname = usePathname();
-  const isOn = (href: string) => (href.includes("#") ? pathname === "/" && active === idOf(href) : pathname.replace(/\/$/, "").replace(/\.html$/, "") === href);
+  // Comparaison tolérante (fonctionne aussi pour un export statique servi dans un sous-dossier)
+  const current = pathname.replace(/\/$/, "").replace(/\.html$/, "");
+  const subPages = ["/formules", "/qui-sommes-nous", "/mentions-legales", "/confidentialite"];
+  const isHome = !subPages.some((p) => current.endsWith(p));
+  const isOn = (href: string) => (href.includes("#") ? isHome && active === idOf(href) : current.endsWith(href));
 
   useEffect(() => {
     let last = window.scrollY;
