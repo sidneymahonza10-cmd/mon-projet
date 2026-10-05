@@ -6,6 +6,11 @@ import Lenis from "lenis";
 /** Défilement fluide (Lenis) + ancres animées. Désactivé si l'utilisateur réduit les animations. */
 export function SmoothScroll() {
   useEffect(() => {
+    // Une nouvelle page s'ouvre toujours en haut (sauf lien vers une section précise) :
+    // on désactive la restauration automatique de la position par le navigateur.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    if (!location.hash) window.scrollTo(0, 0);
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const lenis = new Lenis({ duration: 1.15, easing: (t) => 1 - Math.pow(1 - t, 4), smoothWheel: true });
     let raf = 0;
@@ -28,6 +33,8 @@ export function SmoothScroll() {
       history.replaceState(null, "", url.hash);
     };
     document.addEventListener("click", onClick);
+
+    if (!location.hash) lenis.scrollTo(0, { immediate: true, force: true });
 
     // Arrivée depuis une autre page avec une ancre
     if (location.hash) {
