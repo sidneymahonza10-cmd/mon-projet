@@ -89,11 +89,8 @@ export const reasons = [
   { key: "clarity", title: "Transparence", text: "Vous gardez une vision claire de vos performances." },
 ] as const;
 
-/* ─────────────────────── Statistiques ───────────────────────
- * PLACEHOLDER — valeurs indicatives à remplacer par les chiffres réels de NOVESYA.
- */
+/* ─────────────────────── Statistiques ─────────────────────── */
 export const stats = [
-  { prefix: "+", value: 25, suffix: " %", label: "de potentiel de revenus optimisé*" },
   { prefix: "", value: 24, suffix: "/7", label: "assistance voyageurs" },
   { prefix: "", value: 100, suffix: " %", label: "de gestion déléguée" },
   { prefix: "", value: 1, suffix: "", label: "interlocuteur dédié" },
@@ -112,10 +109,12 @@ export const departments: Department[] = [
 ];
 
 export const towns: { name: string; dept: Department["id"]; x: number; y: number }[] = [
-  { name: "Évry-Courcouronnes", dept: "91", x: 39, y: 29 },
-  { name: "Corbeil-Essonnes", dept: "91", x: 44, y: 34 },
+  { name: "Évry-Courcouronnes", dept: "91", x: 38, y: 31 },
+  { name: "Corbeil-Essonnes", dept: "91", x: 51, y: 38 },
   { name: "Massy", dept: "91", x: 22, y: 13 },
   { name: "Brétigny-sur-Orge", dept: "91", x: 25, y: 34 },
+  { name: "Juvisy-sur-Orge", dept: "91", x: 30, y: 21 },
+  { name: "Draveil", dept: "91", x: 42, y: 17 },
   { name: "Étampes", dept: "91", x: 11, y: 64 },
   { name: "Melun", dept: "77", x: 61, y: 45 },
   { name: "Fontainebleau", dept: "77", x: 65, y: 69 },

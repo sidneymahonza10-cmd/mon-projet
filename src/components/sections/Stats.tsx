@@ -8,7 +8,7 @@ export function Stats() {
   return (
     <section aria-label="NOVESYA en chiffres" className="relative bg-cream pb-24 pt-8 sm:pb-28">
       <div className="container-x">
-        <dl className="grid grid-cols-2 overflow-hidden rounded-[2rem] border border-hairline bg-porcelain lg:grid-cols-4">
+        <dl className="grid overflow-hidden rounded-[2rem] border border-hairline bg-porcelain sm:grid-cols-3">
           {stats.map((s, i) => (
             <motion.div
               key={s.label}
@@ -16,7 +16,7 @@ export function Stats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.9, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="group relative flex flex-col-reverse border-hairline p-6 transition-colors duration-500 hover:bg-linen sm:p-10 [&:nth-child(-n+2)]:border-b lg:[&:nth-child(-n+2)]:border-b-0 [&:nth-child(odd)]:border-r lg:[&:not(:last-child)]:border-r"
+              className="group relative flex flex-col-reverse border-hairline p-6 transition-colors duration-500 hover:bg-linen sm:p-10 [&:not(:last-child)]:border-b sm:[&:not(:last-child)]:border-b-0 sm:[&:not(:last-child)]:border-r"
             >
               <dt className="mt-3 max-w-[16ch] text-taupe">{s.label}</dt>
               <dd>
@@ -25,7 +25,6 @@ export function Stats() {
             </motion.div>
           ))}
         </dl>
-        <p className="mt-6 text-sm text-taupe">*Données indicatives à personnaliser selon les performances réelles de NOVESYA.</p>
       </div>
     </section>
   );

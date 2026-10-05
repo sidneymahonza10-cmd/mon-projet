@@ -8,7 +8,7 @@ import { Counter } from "@/components/ui/Counter";
 import { LogoMark } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
 
-/* PLACEHOLDER — données fictives de démonstration */
+/* Exemple de rapport mensuel (données de démonstration) */
 const kpis = [
   { label: "Revenus du mois", value: 2840, suffix: " €" },
   { label: "Taux d'occupation", value: 87, suffix: " %" },
@@ -65,7 +65,7 @@ export function Dashboard() {
         <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <SectionHeading id="dashboard-title" title="Votre reporting" accent="personnalisé, chaque mois." description="Chaque mois, vous recevez un bilan clair de l'activité de votre logement : revenus, occupation, réservations et calendrier. Simple à lire, sans rien avoir à chercher." />
           <p className="inline-flex items-center gap-2 self-start rounded-full border border-dune px-4 py-2 text-xs text-taupe lg:self-end">
-            <span className="size-1.5 rounded-full bg-caramel" /> Exemple de rapport · données fictives
+            <span className="size-1.5 rounded-full bg-caramel" /> Exemple de rapport mensuel
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export function Dashboard() {
             style={{ rotateX, scale, y, transformOrigin: "50% 0%" }}
             className="overflow-hidden rounded-[1.5rem] border border-hairline bg-porcelain shadow-[0_70px_120px_-60px_rgba(42,32,26,0.55)] sm:rounded-[2rem]"
             role="img"
-            aria-label="Exemple fictif de rapport mensuel NOVESYA : revenus du mois 2 840 €, taux d'occupation 87 %, 18 réservations, prix moyen 126 € par nuit, performance +18 %."
+            aria-label="Exemple de rapport mensuel NOVESYA : revenus du mois 2 840 €, taux d'occupation 87 %, 18 réservations, prix moyen 126 € par nuit, performance +18 %."
           >
             <div className="flex items-center justify-between gap-4 border-b border-hairline bg-cream px-4 py-3.5 sm:px-6">
               <div className="flex items-center gap-2 text-cocoa">

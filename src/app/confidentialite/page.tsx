@@ -15,7 +15,7 @@ export default function Confidentialite() {
       <h2>Finalité</h2>
       <p>Ces informations servent uniquement à vous recontacter et à préparer une estimation pour votre logement. Elles ne sont ni vendues ni cédées.</p>
       <h2>Durée de conservation</h2>
-      <p>[Durée à préciser par NOVESYA].</p>
+      <p>Vos coordonnées sont conservées 3 ans à compter de notre dernier échange, puis supprimées.</p>
       <h2>Vos droits</h2>
       <p>Conformément au RGPD, vous pouvez accéder à vos données, les rectifier ou demander leur suppression en écrivant à {site.contact.email}.</p>
     </LegalPage>

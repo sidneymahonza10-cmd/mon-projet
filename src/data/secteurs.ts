@@ -29,7 +29,7 @@ export const secteurs: Secteur[] = [
       { title: "Proximité d'Orly", text: "L'aéroport à quelques minutes : une clientèle de transit qui recherche des logements pratiques et soignés." },
       { title: "Accès à Paris", text: "RER B, C et D : les voyageurs profitent de Paris en dormant au calme, à un tarif plus doux." },
     ],
-    towns: ["Évry-Courcouronnes", "Massy", "Corbeil-Essonnes", "Brétigny-sur-Orge", "Étampes", "Savigny-sur-Orge", "Palaiseau", "Juvisy-sur-Orge"],
+    towns: ["Évry-Courcouronnes", "Massy", "Corbeil-Essonnes", "Brétigny-sur-Orge", "Étampes", "Savigny-sur-Orge", "Palaiseau", "Juvisy-sur-Orge", "Draveil"],
     faq: [
       { q: "Intervenez-vous dans toute l'Essonne ?", a: "Oui, nous couvrons l'ensemble du département. Pour les communes les plus éloignées, l'organisation du ménage et de l'accueil est validée ensemble lors de la visite." },
       { q: "Mon logement à Évry peut-il être rentable en Airbnb ?", a: "Cela dépend du type de bien, de sa situation et de la réglementation locale. Nous évaluons son potentiel gratuitement lors d'un premier échange." },
