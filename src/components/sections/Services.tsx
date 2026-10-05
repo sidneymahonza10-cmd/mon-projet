@@ -125,6 +125,7 @@ export function Services() {
           if (drag.current?.moved) e.preventDefault();
         }}
         aria-label="Nos services"
+        tabIndex={0}
         data-lenis-prevent-horizontal
         className="mt-14 flex gap-5 overflow-x-auto overscroll-x-contain px-[max(1.25rem,calc((100vw-86rem)/2+3rem))] pb-6 [scrollbar-width:none] active:cursor-grabbing sm:cursor-grab [&::-webkit-scrollbar]:hidden"
         style={{ scrollPaddingInline: "max(1.25rem, calc((100vw - 86rem) / 2 + 3rem))" }}

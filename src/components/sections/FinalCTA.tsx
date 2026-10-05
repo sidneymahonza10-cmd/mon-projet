@@ -4,7 +4,8 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { images } from "@/config/images";
-import { formulesHref } from "@/config/site";
+import { cta, formulesHref } from "@/config/site";
+import { TextLink } from "@/components/ui/TextLink";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Reveal } from "@/components/ui/Reveal";
@@ -34,13 +35,13 @@ export function FinalCTA() {
             <p className="mx-auto mt-7 max-w-xl text-lg text-mint-ink sm:text-xl">Confiez votre logement à NOVESYA. Nous nous occupons du reste.</p>
           </Reveal>
           <Reveal delay={0.3} className="mt-11 flex flex-col items-center gap-3 sm:flex-row">
-            <MagneticButton href="#contact" variant="caramel" size="lg" className="px-9">
-              Obtenir mon estimation gratuite
+            <MagneticButton href={cta.href} variant="caramel" size="lg" className="px-9">
+              {cta.label}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </MagneticButton>
-            <MagneticButton href={formulesHref} variant="ghost-light" size="lg">
+            <TextLink href={formulesHref} tone="light" className="sm:ml-4">
               Découvrir nos formules
-            </MagneticButton>
+            </TextLink>
           </Reveal>
           <p className="mt-5 text-sm text-mint-ink">Sans engagement • Réponse sous 24h</p>
         </div>

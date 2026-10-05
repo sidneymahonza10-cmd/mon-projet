@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, Mail, Phone } from "lucide-react";
 import { goals, propertyTypes } from "@/data/content";
@@ -11,7 +11,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SplitWords } from "@/components/ui/SplitWords";
 import { WhatsAppIcon } from "@/components/ui/BrandIcons";
 import { Field, isEmail, isPhone } from "@/components/ui/Field";
-import { sendLead } from "@/lib/leads";
+import { sendLead, spamSignals } from "@/lib/leads";
+import { Honeypot } from "@/components/ui/Honeypot";
 import { cn } from "@/lib/cn";
 
 type Lead = { city: string; type: string; bedrooms: number; guests: number; goals: string[]; name: string; phone: string; email: string };
@@ -25,6 +26,10 @@ export function ContactForm() {
   const [lead, setLead] = useState<Lead>(empty);
   const [errors, setErrors] = useState<Partial<Record<keyof Lead, string>>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const startedAt = useRef(0);
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, []);
 
   const set = <K extends keyof Lead>(k: K, v: Lead[K]) => {
     setLead((l) => ({ ...l, [k]: v }));
@@ -55,8 +60,9 @@ export function ContactForm() {
       return;
     }
     if (!validate(2)) return;
+    const signals = spamSignals(e.currentTarget as HTMLFormElement, startedAt.current);
     setStatus("sending");
-    setStatus((await sendLead({ source: "estimation", ...lead })) ? "done" : "error");
+    setStatus((await sendLead({ source: "estimation", ...lead, ...signals })) ? "done" : "error");
   }
 
   const progress = status === "done" ? 100 : ((step + 1) / steps.length) * 100;
@@ -92,7 +98,7 @@ export function ContactForm() {
             <div className="mb-8">
               <div className="flex justify-between text-xs">
                 {steps.map((s, i) => (
-                  <span key={s} className={cn("transition-colors", i <= step || status === "done" ? "text-espresso" : "text-taupe/70", i !== step && "hidden sm:inline")}>
+                  <span key={s} className={cn("transition-colors", i <= step || status === "done" ? "text-espresso" : "text-taupe", i !== step && "hidden sm:inline")}>
                     <span className="num text-caramel-deep">{i + 1}.</span> {s}
                   </span>
                 ))}
@@ -186,6 +192,12 @@ export function ContactForm() {
                       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                     </MagneticButton>
                   </div>
+                  <Honeypot />
+                  {step === 2 && (
+                    <p className="mt-5 text-xs leading-relaxed text-taupe">
+                      Vos coordonnées servent uniquement à vous recontacter (conservées 3 ans au plus). <a href="/confidentialite" className="underline hover:text-espresso">Politique de confidentialité</a>.
+                    </p>
+                  )}
                 </motion.form>
               )}
             </AnimatePresence>

@@ -9,6 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { LogoMark } from "@/components/ui/Logo";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { cn } from "@/lib/cn";
+import { cta } from "@/config/site";
 
 type DeptId = Department["id"];
 
@@ -79,7 +80,7 @@ export function MapSection() {
                 <motion.div key={active} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}>
                   <p className="text-sm text-caramel-deep">{dept.detail}</p>
                   <h3 className="mt-1 font-display text-4xl text-espresso">
-                    {dept.name} <span className="text-dune">· {dept.id}</span>
+                    {dept.name} <span className="text-caramel-deep">· {dept.id}</span>
                   </h3>
                   <ul className="mt-6 flex flex-wrap gap-2">
                     {list.map((t, i) => (
@@ -93,8 +94,8 @@ export function MapSection() {
               </AnimatePresence>
               <div className="mt-8 border-t border-hairline pt-6">
                 <p className="text-taupe">Votre logement se situe dans la zone, ou juste à côté ?</p>
-                <MagneticButton href="#contact" variant="primary" className="mt-4">
-                  Parlons-en
+                <MagneticButton href={cta.href} variant="primary" className="mt-4">
+                  {cta.label}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </MagneticButton>
               </div>

@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { site } from "@/config/site";
 import { Providers } from "@/components/layout/Providers";
@@ -10,6 +9,8 @@ import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { Preloader } from "@/components/layout/Preloader";
+import { CookieBanner } from "@/components/layout/CookieBanner";
+import { Analytics } from "@/components/layout/Analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -45,7 +46,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="fr" className={GeistSans.variable}>
       <body>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-full focus:bg-espresso focus:px-5 focus:py-3 focus:text-porcelain">
           Aller au contenu
@@ -57,7 +58,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Header />
           <main id="main">{children}</main>
           <Footer />
-          <WhatsAppButton />
+          <aside aria-label="Contact rapide">
+            <WhatsAppButton />
+          </aside>
+          <CookieBanner />
+          <Analytics />
         </Providers>
       </body>
     </html>

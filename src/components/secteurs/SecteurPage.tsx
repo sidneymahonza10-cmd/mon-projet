@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Check, MapPin } from "lucide-react";
-import { formulesHref } from "@/config/site";
+import { cta, formulesHref } from "@/config/site";
+import { TextLink } from "@/components/ui/TextLink";
 import { services } from "@/data/content";
 import { secteurs, secteurHref, type Secteur } from "@/data/secteurs";
 import { LogoMark } from "@/components/ui/Logo";
@@ -37,13 +38,13 @@ export function SecteurPage({ secteur: s }: { secteur: Secteur }) {
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-taupe sm:text-xl">{s.intro}</p>
           </Reveal>
           <Reveal delay={0.4} className="mt-10 flex flex-col gap-3 sm:flex-row">
-            <MagneticButton href="/#contact" variant="primary" size="lg">
-              Demander mon estimation gratuite
+            <MagneticButton href={cta.href} variant="primary" size="lg">
+              {cta.label}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </MagneticButton>
-            <MagneticButton href={formulesHref} variant="ghost" size="lg">
+            <TextLink href={formulesHref} className="sm:ml-4">
               Découvrir nos formules
-            </MagneticButton>
+            </TextLink>
           </Reveal>
         </div>
       </section>
@@ -58,7 +59,7 @@ export function SecteurPage({ secteur: s }: { secteur: Secteur }) {
             {s.demand.map((d, i) => (
               <motion.li key={d.title} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9, delay: i * 0.1, ease }}>
                 <article className="h-full rounded-[2rem] border border-hairline bg-cream p-8 sm:p-10">
-                  <p className="font-display text-5xl italic text-caramel">0{i + 1}</p>
+                  <p className="font-display text-5xl italic text-caramel-deep">0{i + 1}</p>
                   <h3 className="mt-8 font-display text-3xl text-espresso">{d.title}</h3>
                   <p className="mt-3 leading-relaxed text-taupe">{d.text}</p>
                 </article>

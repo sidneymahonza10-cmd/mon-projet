@@ -50,6 +50,13 @@ export const whatsappHref = `https://wa.me/${site.contact.whatsapp}?text=${encod
   site.whatsappMessage,
 )}`;
 
+/** Appel à l'action unique du site : la demande d'estimation gratuite */
+export const cta = {
+  label: "Demander mon estimation gratuite",
+  short: "Estimation gratuite",
+  href: "/#contact",
+} as const;
+
 /** Lien de la page « Nos formules » (prise de contact privée) */
 export const formulesHref = "/formules";
 

@@ -11,7 +11,7 @@ export function WhatsAppButton() {
       href={whatsappHref}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Nous écrire sur WhatsApp — message d'estimation prérempli"
+      aria-label="Une question ? Écrivez-nous sur WhatsApp"
       initial={{ opacity: 0, scale: 0.6, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ delay: 2.6, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}

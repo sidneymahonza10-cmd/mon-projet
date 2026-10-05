@@ -155,7 +155,7 @@ export function Dashboard() {
                         const day = i + 1;
                         const on = booked.has(day);
                         return (
-                          <motion.span key={day} initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 + i * 0.02, duration: 0.4 }} className={cn("num grid aspect-square place-items-center rounded-md text-[0.7rem]", on ? "bg-caramel text-porcelain" : "bg-cream text-taupe")}>
+                          <motion.span key={day} initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 + i * 0.02, duration: 0.4 }} className={cn("num grid aspect-square place-items-center rounded-md text-[0.7rem]", on ? "bg-caramel-strong text-porcelain" : "bg-cream text-taupe")}>
                             {day}
                           </motion.span>
                         );
@@ -183,7 +183,7 @@ export function Dashboard() {
                             <td className="num hidden px-2 py-3 text-taupe sm:table-cell">{b.dates}</td>
                             <td className="num px-2 py-3 text-espresso">{b.amount}</td>
                             <td className="px-4 py-3 text-right sm:px-5">
-                              <span className={cn("rounded-full px-2.5 py-1 text-[0.68rem]", b.status === "En cours" ? "bg-caramel text-porcelain" : b.status === "À venir" ? "bg-sage-soft text-forest" : "text-taupe")}>{b.status}</span>
+                              <span className={cn("rounded-full px-2.5 py-1 text-[0.68rem]", b.status === "En cours" ? "bg-caramel-strong text-porcelain" : b.status === "À venir" ? "bg-sage-soft text-forest" : "text-taupe")}>{b.status}</span>
                             </td>
                           </tr>
                         ))}

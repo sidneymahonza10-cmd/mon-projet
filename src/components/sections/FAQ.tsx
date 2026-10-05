@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { faq } from "@/data/content";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { MagneticButton } from "@/components/ui/MagneticButton";
+import { TextLink } from "@/components/ui/TextLink";
 import { whatsappHref } from "@/config/site";
 import { cn } from "@/lib/cn";
 
@@ -17,9 +17,9 @@ export function FAQ() {
         <div className="lg:sticky lg:top-32 lg:self-start">
           <SectionHeading id="faq-title" title="Vos questions," accent="nos réponses." description="Une autre question ? Nous vous répondons directement." />
           <div className="mt-8">
-            <MagneticButton href={whatsappHref} target="_blank" rel="noopener noreferrer" variant="ghost">
+            <TextLink href={whatsappHref} external>
               Poser ma question sur WhatsApp
-            </MagneticButton>
+            </TextLink>
           </div>
         </div>
         <ul className="border-t border-hairline">

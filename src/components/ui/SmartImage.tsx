@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/cn";
 
 type SmartImageProps = {
@@ -20,14 +21,8 @@ type SmartImageProps = {
  * Image avec repli élégant : si la photo (placeholder) ne charge pas,
  * une illustration d'intérieur lumineux s'affiche — jamais d'icône cassée.
  */
-export function SmartImage({ src, alt, className, imgClassName, priority, sizes, variant = 0, artClassName }: SmartImageProps) {
-  const ref = useRef<HTMLImageElement>(null);
+export function SmartImage({ src, alt, className, imgClassName, priority, sizes = "(min-width: 1024px) 50vw, 100vw", variant = 0, artClassName }: SmartImageProps) {
   const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    const img = ref.current;
-    if (img && img.complete && img.naturalWidth === 0) setFailed(true);
-  }, []);
 
   return (
     <div className={cn("relative overflow-hidden bg-linen", className)}>
@@ -35,18 +30,8 @@ export function SmartImage({ src, alt, className, imgClassName, priority, sizes,
         <InteriorArt variant={variant} />
       </div>
       {src && !failed && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          ref={ref}
-          src={src}
-          alt={alt}
-          sizes={sizes}
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : "auto"}
-          decoding="async"
-          onError={() => setFailed(true)}
-          className={cn("relative h-full w-full object-cover", imgClassName)}
-        />
+        // Image optimisée par Next.js : WebP/AVIF à la bonne taille selon l'écran
+        <Image src={src} alt={alt} fill sizes={sizes} preload={priority} loading={priority ? "eager" : "lazy"} onError={() => setFailed(true)} className={cn("object-cover", imgClassName)} />
       )}
       {failed && <span className="sr-only">{alt}</span>}
     </div>

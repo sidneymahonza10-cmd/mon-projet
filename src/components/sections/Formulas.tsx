@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { plans } from "@/data/content";
 import { formulesHref } from "@/config/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { MagneticButton } from "@/components/ui/MagneticButton";
+import { TextLink } from "@/components/ui/TextLink";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { cn } from "@/lib/cn";
 
@@ -26,12 +26,12 @@ export function Formulas() {
                   glow={premium ? "rgba(220,201,168,0.18)" : "rgba(184,135,74,0.14)"}
                   className={cn("h-full overflow-hidden rounded-[2.25rem]", premium ? "bg-forest text-porcelain shadow-[0_60px_110px_-50px_rgba(36,50,31,0.85)]" : "border border-hairline bg-porcelain shadow-[0_40px_80px_-60px_rgba(42,32,26,0.5)]")}
                 >
-                  <article className="relative z-10 flex h-full flex-col p-8 sm:p-11">
+                  <article className="relative z-10 flex h-full flex-col p-6 min-[380px]:p-8 sm:p-11">
                     {premium && (
-                      <span className="absolute right-7 top-7 rounded-full bg-caramel px-3.5 py-1.5 text-[0.65rem] font-semibold tracking-[0.18em] text-porcelain sm:right-9 sm:top-9">LA PLUS CHOISIE</span>
+                      <span className="absolute right-7 top-7 whitespace-nowrap rounded-full bg-caramel-strong px-3.5 py-1.5 text-[0.65rem] font-semibold tracking-[0.18em] text-porcelain sm:right-9 sm:top-9">LA PLUS CHOISIE</span>
                     )}
                     <p className={cn("text-[0.75rem] font-medium tracking-[0.22em]", premium ? "text-sand" : "text-caramel-deep")}>FORMULE {plan.code}</p>
-                    <h3 className="mt-3 font-display text-5xl sm:text-6xl">{plan.name}</h3>
+                    <h3 className="mt-3 font-display text-[2.6rem] min-[380px]:text-5xl sm:text-6xl">{plan.name}</h3>
                     <p className={cn("mt-4 max-w-xs text-lg", premium ? "text-mint-ink" : "text-taupe")}>{plan.pitch}</p>
 
                     {plan.intro && <p className="mt-8 font-medium text-sand">{plan.intro}</p>}
@@ -47,10 +47,9 @@ export function Formulas() {
                     </ul>
 
                     <div className="mt-auto pt-10">
-                      <MagneticButton href={`${formulesHref}#${plan.id}`} variant={premium ? "caramel" : "primary"} size="lg" className="w-full" strength={0.12}>
-                        Découvrir nos formules
-                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                      </MagneticButton>
+                      <TextLink href={`${formulesHref}#${plan.id}`} tone={premium ? "light" : "dark"}>
+                        Voir le détail de la formule {plan.name}
+                      </TextLink>
                     </div>
                   </article>
                 </TiltCard>

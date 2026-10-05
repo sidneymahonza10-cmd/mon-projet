@@ -3,7 +3,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, HandHeart, ShieldCheck, Users } from "lucide-react";
-import { formulesHref } from "@/config/site";
+import { cta, formulesHref } from "@/config/site";
+import { TextLink } from "@/components/ui/TextLink";
 import { LogoMark } from "@/components/ui/Logo";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { Reveal } from "@/components/ui/Reveal";
@@ -86,13 +87,13 @@ export function HistoirePage() {
                 viewport={{ once: true, margin: "0px 0px -10% 0px" }}
                 transition={{ duration: 1, delay: i * 0.1, ease }}
               >
-                <article className="group relative h-full overflow-hidden rounded-[2rem] border border-hairline bg-cream p-8 transition-[transform,box-shadow] duration-700 hover:-translate-y-2 hover:shadow-[0_40px_70px_-40px_rgba(42,32,26,0.5)] sm:p-10">
+                <article className="group relative h-full overflow-hidden rounded-[2rem] border border-hairline bg-cream p-7 transition-[transform,box-shadow] duration-700 hover:-translate-y-2 hover:shadow-[0_40px_70px_-40px_rgba(42,32,26,0.5)] sm:p-10">
                   <span aria-hidden="true" className="absolute inset-0 origin-bottom scale-y-0 bg-forest transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100" />
                   <div className="relative">
                     <span className="grid size-14 place-items-center rounded-2xl bg-porcelain text-caramel-deep transition-colors duration-500 group-hover:bg-porcelain/10 group-hover:text-sand">
                       <v.icon className="size-6" strokeWidth={1.4} />
                     </span>
-                    <h3 className="mt-14 font-display text-4xl text-espresso transition-colors duration-500 group-hover:text-porcelain">{v.title}</h3>
+                    <h3 className="mt-14 font-display text-[2rem] text-espresso min-[380px]:text-4xl transition-colors duration-500 group-hover:text-porcelain">{v.title}</h3>
                     <p className="mt-3 leading-relaxed text-taupe transition-colors duration-500 group-hover:text-mint-ink">{v.text}</p>
                   </div>
                 </article>
@@ -117,13 +118,13 @@ export function HistoirePage() {
             <p className="mt-10 font-display text-xl italic text-mint-ink">— Les fondateurs de NOVESYA</p>
           </Reveal>
           <Reveal delay={0.4} className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <MagneticButton href={formulesHref} variant="caramel" size="lg">
-              Découvrir nos formules
+            <MagneticButton href={cta.href} variant="caramel" size="lg">
+              {cta.label}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </MagneticButton>
-            <MagneticButton href="/#contact" variant="ghost-light" size="lg">
-              Parlons de votre logement
-            </MagneticButton>
+            <TextLink href={formulesHref} tone="light" className="sm:ml-4">
+              Découvrir nos formules
+            </TextLink>
           </Reveal>
         </div>
       </section>

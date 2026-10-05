@@ -5,7 +5,8 @@ import type { MotionValue } from "framer-motion";
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowDown, ArrowRight, CalendarCheck, KeyRound, Star } from "lucide-react";
 import { images } from "@/config/images";
-import { formulesHref } from "@/config/site";
+import { cta, formulesHref } from "@/config/site";
+import { TextLink } from "@/components/ui/TextLink";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { INTRO_DURATION, introPlays } from "@/lib/intro";
@@ -20,7 +21,7 @@ function useStart() {
   return isClient ? (introPlays() ? INTRO_DURATION - 0.2 : 0.1) : null;
 }
 
-function Headline({ start }: { start: number | null }) {
+function Headline({ start, primary = false }: { start: number | null; primary?: boolean }) {
   const ready = start !== null;
   const word = (w: string, i: number, offset: number) => (
     <span key={i} className="inline-block overflow-hidden pb-[0.1em] align-bottom">
@@ -34,11 +35,22 @@ function Headline({ start }: { start: number | null }) {
       </motion.span>
     </span>
   );
-  return (
-    <h1 id="hero-title" className="font-display text-[clamp(2.9rem,6.6vw,6.1rem)] font-normal leading-[0.96] tracking-[-0.025em] text-espresso">
+  const className = "font-display text-[clamp(2.9rem,6.6vw,6.1rem)] font-normal leading-[0.96] tracking-[-0.025em] text-espresso";
+  const content = (
+    <>
       <span className="block">{line1.map((w, i) => word(w, i, 0))}</span>
       <span className="block italic text-caramel-deep">{line2.map((w, i) => word(w, i, 0.2))}</span>
+    </>
+  );
+  // Le titre existe en version bureau et mobile (une seule visible) : une seule balise <h1> dans la page
+  return primary ? (
+    <h1 id="hero-title" className={className}>
+      {content}
     </h1>
+  ) : (
+    <p role="heading" aria-level={1} className={className}>
+      {content}
+    </p>
   );
 }
 
@@ -61,13 +73,13 @@ function Intro({ start }: { start: number | null }) {
         animate={ready ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 1, delay: d + 0.8, ease }}
       >
-        <MagneticButton href="#contact" size="lg">
-          Demander mon estimation gratuite
+        <MagneticButton href={cta.href} size="lg">
+          {cta.label}
           <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
         </MagneticButton>
-        <MagneticButton href={formulesHref} variant="ghost" size="lg">
+        <TextLink href={formulesHref} className="sm:ml-4">
           Découvrir nos formules
-        </MagneticButton>
+        </TextLink>
       </motion.div>
     </>
   );
@@ -125,7 +137,7 @@ export function Hero() {
 
         <motion.div style={{ opacity: textOpacity, y: textY }} className="container-x relative z-10 flex h-full items-center">
           <div className="max-w-[46%] pt-10">
-            <Headline start={start} />
+            <Headline start={start} primary />
             <Intro start={start} />
           </div>
         </motion.div>

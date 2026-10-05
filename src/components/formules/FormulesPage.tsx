@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check, Lock, PhoneCall, Sparkles } from "lucide-react";
 import { planChoices, plans } from "@/data/content";
@@ -10,7 +10,8 @@ import { SplitWords } from "@/components/ui/SplitWords";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { Field, isEmail, isPhone } from "@/components/ui/Field";
 import { Success } from "@/components/sections/ContactForm";
-import { sendLead } from "@/lib/leads";
+import { sendLead, spamSignals } from "@/lib/leads";
+import { Honeypot } from "@/components/ui/Honeypot";
 import { cn } from "@/lib/cn";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -29,9 +30,11 @@ export function FormulesPage() {
   const [name, setName] = useState("");
   const [errors, setErrors] = useState<{ phone?: string; email?: string }>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const startedAt = useRef(0);
 
   // Pré-sélection depuis le lien (#essentielle / #premium)
   useEffect(() => {
+    startedAt.current = Date.now();
     const h = location.hash.slice(1);
     const plan = plans.find((p) => p.id === h);
     if (plan) queueMicrotask(() => setChoice(plan.name));
@@ -45,8 +48,9 @@ export function FormulesPage() {
     setErrors(next);
     if (next.phone) return document.getElementById(`${uid}-phone`)?.focus();
     if (next.email) return document.getElementById(`${uid}-email`)?.focus();
+    const signals = spamSignals(e.currentTarget as HTMLFormElement, startedAt.current);
     setStatus("sending");
-    setStatus((await sendLead({ source: "formules", formule: choice, name, phone, email })) ? "done" : "error");
+    setStatus((await sendLead({ source: "formules", formule: choice, name, phone, email, ...signals })) ? "done" : "error");
   }
 
   const pick = (name: string) => {
@@ -83,13 +87,13 @@ export function FormulesPage() {
               return (
                 <motion.div key={plan.id} id={plan.id} initial={{ opacity: 0, y: 60 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 + i * 0.12, ease }}>
                   <TiltCard max={4} className={cn("h-full overflow-hidden rounded-[2.25rem] transition-shadow duration-500", premium ? "bg-forest text-porcelain" : "border border-hairline bg-porcelain", selected ? "shadow-[0_0_0_3px_var(--color-caramel),0_50px_90px_-50px_rgba(42,32,26,0.6)]" : "shadow-[0_40px_80px_-60px_rgba(42,32,26,0.5)]")}>
-                    <article className="relative z-10 flex h-full flex-col p-8 sm:p-11">
-                      <div className="flex items-start justify-between gap-4">
+                    <article className="relative z-10 flex h-full flex-col p-6 min-[380px]:p-8 sm:p-11">
+                      <div className="flex flex-wrap-reverse items-start justify-between gap-x-4 gap-y-3">
                         <div>
                           <p className={cn("text-[0.75rem] font-medium tracking-[0.22em]", premium ? "text-sand" : "text-caramel-deep")}>FORMULE {plan.code}</p>
-                          <h2 className="mt-3 font-display text-5xl sm:text-6xl">{plan.name}</h2>
+                          <h2 className="mt-3 font-display text-[2.6rem] min-[380px]:text-5xl sm:text-6xl">{plan.name}</h2>
                         </div>
-                        {premium && <span className="rounded-full bg-caramel px-3 py-1.5 text-[0.62rem] font-semibold tracking-[0.18em] text-porcelain">LA PLUS CHOISIE</span>}
+                        {premium && <span className="whitespace-nowrap rounded-full bg-caramel-strong px-3 py-1.5 text-[0.62rem] font-semibold tracking-[0.18em] text-porcelain">LA PLUS CHOISIE</span>}
                       </div>
                       <p className={cn("mt-4 text-lg", premium ? "text-mint-ink" : "text-taupe")}>{plan.pitch}</p>
                       <p className={cn("mt-2 text-sm", premium ? "text-sand" : "text-caramel-deep")}>{plan.ideal}</p>
@@ -183,8 +187,9 @@ export function FormulesPage() {
                       {status === "sending" ? "Envoi en cours…" : "Être recontacté en privé"}
                       <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                     </MagneticButton>
+                    <Honeypot />
                     <p className="text-center text-xs leading-relaxed text-taupe">
-                      Vos coordonnées servent uniquement à vous recontacter. <a href="/confidentialite" className="underline hover:text-espresso">Politique de confidentialité</a>.
+                      Vos coordonnées servent uniquement à vous recontacter (conservées 3 ans au plus). <a href="/confidentialite" className="underline hover:text-espresso">Politique de confidentialité</a>.
                     </p>
                   </motion.form>
                 )}

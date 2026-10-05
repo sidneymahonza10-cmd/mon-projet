@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { formulesHref, nav, site, whatsappHref } from "@/config/site";
+import { cta, nav, site, whatsappHref } from "@/config/site";
 import { Logo } from "@/components/ui/Logo";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { InstagramIcon, WhatsAppIcon } from "@/components/ui/BrandIcons";
@@ -75,8 +75,9 @@ export function Header() {
             >
               {/* Lien natif volontaire : défilement fluide géré par Lenis */}
               {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-              <a href="/#accueil" aria-label={`${site.name} — retour à l'accueil`} className="shrink-0">
+              <a href="/#accueil" className="shrink-0">
                 <Logo className={cn("origin-left transition-transform duration-500", scrolled && "scale-[0.86]")} />
+                <span className="sr-only">, retour à l&apos;accueil</span>
               </a>
 
               <nav aria-label="Navigation principale" className="hidden xl:block">
@@ -97,8 +98,8 @@ export function Header() {
 
               <div className="flex items-center gap-2">
                 <div className="hidden sm:block">
-                  <MagneticButton href={formulesHref} variant="caramel" className="min-h-11 px-5 text-[0.85rem]">
-                    Découvrir nos formules
+                  <MagneticButton href={cta.href} variant="caramel" className="min-h-11 px-5 text-[0.85rem]">
+                    {cta.short}
                     <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </MagneticButton>
                 </div>
@@ -152,8 +153,8 @@ export function Header() {
             </nav>
 
             <motion.div className="container-x space-y-5 pb-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 }}>
-              <MagneticButton href={formulesHref} variant="caramel" size="lg" className="w-full" onClick={() => setOpen(false)}>
-                Découvrir nos formules
+              <MagneticButton href={cta.href} variant="caramel" size="lg" className="w-full" onClick={() => setOpen(false)}>
+                {cta.label}
               </MagneticButton>
               <div className="flex items-center justify-between text-sm text-mint-ink">
                 <span className="select-all">{site.contact.email}</span>

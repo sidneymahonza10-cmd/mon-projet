@@ -13,5 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...secteurs.map((s) => ({ url: `${site.url}${secteurHref(s.slug)}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 })),
     { url: `${site.url}/mentions-legales`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     { url: `${site.url}/confidentialite`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
+    { url: `${site.url}/cgu`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
 }

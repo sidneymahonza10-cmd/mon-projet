@@ -6,7 +6,7 @@ import { images } from "@/config/images";
 import { formulesHref } from "@/config/site";
 import { SmartImage } from "@/components/ui/SmartImage";
 import { Reveal } from "@/components/ui/Reveal";
-import { MagneticButton } from "@/components/ui/MagneticButton";
+import { TextLink } from "@/components/ui/TextLink";
 import { RotatingBadge } from "@/components/ui/RotatingBadge";
 import { SplitWords } from "@/components/ui/SplitWords";
 import { CameraCompare } from "@/components/ui/CameraCompare";
@@ -99,9 +99,9 @@ export function Shooting() {
               OFFERT <span className="italic text-caramel-deep">avec la formule Premium</span>
             </p>
           </div>
-          <MagneticButton href={formulesHref} variant="primary" size="lg" className="shrink-0">
-            Découvrir nos formules
-          </MagneticButton>
+          <TextLink href={`${formulesHref}#premium`} className="shrink-0">
+            Voir la formule Premium
+          </TextLink>
         </Reveal>
       </div>
     </section>

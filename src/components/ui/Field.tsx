@@ -3,7 +3,7 @@ export function Field({ id, label, error, hint, children }: { id: string; label:
   return (
     <div>
       <label htmlFor={id} className="mb-2 block text-sm text-taupe">
-        {label} {hint && <span className="text-taupe/70">{hint}</span>}
+        {label} {hint && <span className="text-taupe">{hint}</span>}
       </label>
       {children}
       {error && (
@@ -15,5 +15,10 @@ export function Field({ id, label, error, hint, children }: { id: string; label:
   );
 }
 
-export const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-export const isPhone = (v: string) => /^[+\d][\d\s.-]{7,}$/.test(v.trim());
+// Mêmes règles que la validation serveur (src/app/api/lead/route.ts)
+export const isEmail = (v: string) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(v.trim());
+export const isPhone = (v: string) => {
+  const t = v.trim();
+  const n = t.replace(/\D/g, "").length;
+  return /^[+\d][\d\s().-]+$/.test(t) && n >= 9 && n <= 15;
+};

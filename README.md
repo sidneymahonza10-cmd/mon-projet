@@ -44,6 +44,15 @@ Autres points à compléter :
 
 > Les statistiques et les données du rapport mensuel d'exemple sont **fictives** et signalés comme tels sur le site. Remplacez-les par des données réelles avant publication. Aucun tarif ni pourcentage de commission n'est affiché : les conditions sont présentées en privé.
 
+## Conformité & mise en ligne
+
+- **Pages légales** : `/mentions-legales` (à compléter à la création de la société), `/confidentialite` (RGPD, cookies), `/cgu`.
+- **Cookies & mesure d'audience** : bannière de consentement (`src/components/layout/CookieBanner.tsx`), Umami chargé seulement après « Accepter » si `NEXT_PUBLIC_UMAMI_WEBSITE_ID` est défini. Lien « Gérer les cookies » dans le pied de page.
+- **Sécurité** : HTTPS forcé + HSTS, en-têtes de sécurité et CSP dans `next.config.ts`.
+- **Formulaires** : validation côté navigateur et côté serveur (`src/app/api/lead/route.ts`), anti-spam (champ piège, délai minimal, limite par IP, contrôle d'origine).
+- **Appel à l'action unique** : `cta` dans `src/config/site.ts` (« Demander mon estimation gratuite »).
+- **Icônes & partage** : `src/app/favicon.ico`, `icon.svg`, `apple-icon.png`, `manifest.ts`, `opengraph-image.png` / `twitter-image.png`.
+
 ## Structure
 
 ```

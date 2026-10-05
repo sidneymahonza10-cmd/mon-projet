@@ -8,7 +8,7 @@ type Variant = "primary" | "caramel" | "ghost" | "light" | "ghost-light";
 
 const variants: Record<Variant, string> = {
   primary: "bg-espresso text-porcelain shadow-[0_14px_30px_-14px_rgba(42,32,26,0.6)]",
-  caramel: "bg-caramel text-porcelain shadow-[0_14px_30px_-12px_rgba(184,135,74,0.7)]",
+  caramel: "bg-caramel-strong text-porcelain shadow-[0_14px_30px_-12px_rgba(184,135,74,0.7)]",
   light: "bg-porcelain text-espresso shadow-[0_14px_30px_-14px_rgba(0,0,0,0.35)]",
   ghost: "border border-espresso/20 text-espresso hover:border-espresso/60",
   "ghost-light": "border border-porcelain/40 text-porcelain hover:border-porcelain",

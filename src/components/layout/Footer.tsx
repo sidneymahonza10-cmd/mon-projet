@@ -3,6 +3,7 @@ import { formulesHref, site, whatsappHref } from "@/config/site";
 import { Logo } from "@/components/ui/Logo";
 import { InstagramIcon, WhatsAppIcon } from "@/components/ui/BrandIcons";
 import { secteurs, secteurHref } from "@/data/secteurs";
+import { CookieSettingsLink } from "@/components/layout/CookieSettingsLink";
 
 const columns = [
   {
@@ -59,7 +60,7 @@ export function Footer() {
             <ul className="mt-5 space-y-3">
               <li>
                 <a href={site.contact.instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2.5 text-taupe transition-colors hover:text-espresso">
-                  <InstagramIcon className="size-4" /> Instagram <span className="text-taupe/80">{site.contact.instagramHandle}</span>
+                  <InstagramIcon className="size-4" /> Instagram <span className="text-taupe">{site.contact.instagramHandle}</span>
                 </a>
               </li>
               <li>
@@ -76,19 +77,26 @@ export function Footer() {
           </div>
         </div>
 
-        <p aria-hidden="true" className="mt-20 select-none whitespace-nowrap text-center font-display text-[19vw] leading-[0.8] tracking-[0.04em] text-sand/60">
-          NOVESYA
-        </p>
+        {/* Signature décorative (SVG : purement graphique, ignorée par les lecteurs d'écran) */}
+        <svg aria-hidden="true" focusable="false" viewBox="0 0 1000 152" className="mt-20 block w-full select-none fill-sand/60">
+          <text x="500" y="140" textAnchor="middle" textLength="990" lengthAdjust="spacingAndGlyphs" className="font-display" fontSize="190">
+            NOVESYA
+          </text>
+        </svg>
 
         <div className="mt-8 flex flex-col gap-4 border-t border-hairline pt-8 text-sm text-taupe sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} NOVESYA Conciergerie. Tous droits réservés.</p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
             <a href="/mentions-legales" className="transition-colors hover:text-espresso">
               Mentions légales
             </a>
             <a href="/confidentialite" className="transition-colors hover:text-espresso">
-              Politique de confidentialité
+              Confidentialité (RGPD)
             </a>
+            <a href="/cgu" className="transition-colors hover:text-espresso">
+              CGU
+            </a>
+            <CookieSettingsLink className="text-left transition-colors hover:text-espresso" />
           </div>
         </div>
       </div>
