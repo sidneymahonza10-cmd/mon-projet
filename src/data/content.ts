@@ -168,14 +168,6 @@ export const faq = [
     a: "Oui. Nous pouvons travailler directement sur votre compte existant, en tant que co-hôte, afin de conserver votre historique et vos avis.",
   },
   {
-    q: "Comment suis-je payé ?",
-    a: "Les revenus des réservations vous sont versés selon les modalités de la plateforme de réservation. Les modalités exactes sont détaillées avec vous lors de la mise en place. [À préciser par NOVESYA]",
-  },
-  {
-    q: "Puis-je arrêter la collaboration ?",
-    a: "Oui. La collaboration est pensée pour être souple ; les conditions et le préavis sont précisés dans le contrat de gestion. [Préavis à préciser par NOVESYA]",
-  },
-  {
     q: "Dans quelles villes intervenez-vous ?",
     a: `Nous intervenons dans ${site.zone.label}. Votre logement est situé juste à côté ? Contactez-nous : nous étudions chaque demande.`,
   },

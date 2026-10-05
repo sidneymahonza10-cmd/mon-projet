@@ -40,7 +40,7 @@ Autres points à compléter :
 - **Titre Google** de l'accueil : `seoTitle` / `seoDescription` dans `src/config/site.ts`.
 - **Formulaires** : la page `/formules` (téléphone + e-mail, rappel en privé) et le formulaire d'estimation envoient vers `src/app/api/lead/route.ts`, qui transmet chaque demande par e-mail via [Resend](https://resend.com). Définissez chez l'hébergeur `RESEND_API_KEY`, `LEAD_EMAIL_TO` et `LEAD_EMAIL_FROM` (voir `.env.example`).
 - **Pages légales** : `src/app/mentions-legales` et `src/app/confidentialite` (champs entre crochets).
-- **FAQ** : les réponses marquées `[À préciser par NOVESYA]`.
+- **FAQ** : `src/data/content.ts` (le paiement et le préavis sont volontairement traités en rendez-vous, pas sur le site).
 
 > Les statistiques et les données du rapport mensuel d'exemple sont **fictives** et signalés comme tels sur le site. Remplacez-les par des données réelles avant publication. Aucun tarif ni pourcentage de commission n'est affiché : les conditions sont présentées en privé.
 
