@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Plaquette NOVESYA — Formules</title>
+<style>
+  /* Polices du site (EB Garamond + Geist), embarquées localement pour l'export PDF */
+  @font-face { font-family: "EB Garamond"; font-style: normal; font-weight: 400 600; src: url(fonts/EBGaramond.woff2) format("woff2"); }
+  @font-face { font-family: "EB Garamond"; font-style: italic; font-weight: 400 600; src: url(fonts/EBGaramond-Italic.woff2) format("woff2"); }
+  @font-face { font-family: "Geist"; font-style: normal; font-weight: 300 600; src: url(fonts/Geist.woff2) format("woff2"); }
+</style>
+<!--
+  Plaquette NOVESYA — reprend la palette « Maison claire » du site
+  (src/app/globals.css) : crème, porcelaine, lin, sable, caramel, brun du logo,
+  sauge et vert forêt. Export PDF : node plaquette/export-pdf.mjs
+  PLACEHOLDER — numéro de téléphone à remplacer ci-dessous (« [Votre numéro] »).
+-->
+<style>
+  :root {
+    --cream: #f6f1e9;
+    --porcelain: #fdfbf7;
+    --linen: #ece3d5;
+    --sand: #dcc9a8;
+    --dune: #c7ae86;
+    --caramel: #b8874a;
+    --caramel-deep: #8a5d28;
+    --espresso: #2a201a;
+    --cocoa: #4a3328;
+    --taupe: #6b5f55;
+    --hairline: #e2d7c6;
+    --sage: #8e9a82;
+    --sage-soft: #dfe3d6;
+    --forest: #24321f;
+    --forest-soft: #3a4a33;
+    --mint-ink: #d9dfcf;
+    --display: "EB Garamond", Georgia, serif;
+    --sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #d8d0c4; }
+  body {
+    font-family: var(--sans);
+    color: var(--espresso);
+    -webkit-font-smoothing: antialiased;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 auto 12mm;
+    padding: 15mm 16mm 13mm;
+    background: var(--cream);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  @media print { html, body { background: none; } .page { margin: 0; } }
+
+  /* Grain papier, comme sur le site */
+  .page::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: .06;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .blob { position: absolute; border-radius: 999px; filter: blur(60px); pointer-events: none; }
+  .page > *:not(.blob):not(.arch) { position: relative; z-index: 1; }
+
+  .display { font-family: var(--display); font-weight: 400; letter-spacing: -.018em; }
+  .accent { font-style: italic; color: var(--caramel-deep); }
+  .num { font-variant-numeric: tabular-nums lining-nums; }
+  .eyebrow { font-size: 7.6pt; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; color: var(--caramel-deep); }
+  .lead { font-size: 10.4pt; line-height: 1.6; color: var(--taupe); text-wrap: pretty; }
+
+  /* En-tête */
+  .head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 6mm; border-bottom: 1px solid var(--hairline); }
+  .logo { display: inline-flex; align-items: center; gap: 3mm; color: var(--cocoa); }
+  .logo svg { height: 9mm; color: var(--caramel); }
+  .logo .word { display: flex; flex-direction: column; line-height: 1; }
+  .logo .name { font-family: var(--display); font-size: 15pt; font-weight: 500; letter-spacing: .12em; }
+  .logo .sub { margin-top: 1.2mm; font-size: 5.4pt; font-weight: 500; letter-spacing: .42em; color: var(--taupe); }
+  .head .folio { font-size: 7.2pt; font-weight: 500; letter-spacing: .22em; color: var(--taupe); }
+
+  .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 4.5mm; border-top: 1px solid var(--hairline); font-size: 7pt; letter-spacing: .14em; color: var(--taupe); text-transform: uppercase; }
+
+  /* ───────── Page 1 · Couverture ───────── */
+  .cover { padding-bottom: 0; }
+  .cover .hero { margin: auto 0; padding: 6mm 0 10mm; }
+  .cover h1 .accent { display: block; }
+  .cover h1 { margin-top: 6mm; font-size: 56pt; line-height: .98; letter-spacing: -.03em; color: var(--espresso); }
+  .cover .rule { width: 16mm; height: 1.5px; background: var(--caramel); margin: 10mm 0 7mm; }
+  .cover .lead { max-width: 108mm; font-size: 11pt; }
+  .cover .chips { margin-top: 8mm; display: flex; gap: 2.5mm; flex-wrap: wrap; }
+  .chip { border: 1px solid var(--hairline); background: var(--porcelain); border-radius: 999px; padding: 2mm 4mm; font-size: 7.6pt; color: var(--espresso); }
+  .chip b { font-weight: 500; color: var(--caramel-deep); }
+  .arch {
+    position: absolute; right: -14mm; top: 70mm; width: 92mm; height: 150mm;
+    border: 1px solid var(--dune); border-radius: 46mm 46mm 0 0; border-bottom: 0;
+  }
+  .cover-band {
+    margin: 0 -16mm; padding: 11mm 16mm 12mm;
+    background: var(--forest); color: var(--porcelain);
+    border-radius: 12mm 12mm 0 0;
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 10mm;
+  }
+  .cover-band .promise { font-family: var(--display); font-size: 25pt; line-height: 1.02; letter-spacing: -.02em; }
+  .cover-band .promise i { color: var(--sand); }
+  .cover-band .meta { text-align: right; font-size: 7.6pt; line-height: 1.7; color: var(--mint-ink); }
+  .cover-band .meta .tag { display: inline-block; margin-bottom: 2.5mm; font-size: 6.6pt; letter-spacing: .24em; color: var(--sand); }
+
+  /* ───────── Page 2 · Accompagnement ───────── */
+  h2 { font-family: var(--display); font-weight: 400; font-size: 29pt; line-height: 1.02; letter-spacing: -.02em; text-wrap: balance; }
+  .section-top { margin-top: 9mm; }
+  .section-top h2 { margin-top: 3.5mm; }
+  .section-top .lead { margin-top: 4mm; max-width: 140mm; }
+
+  .services { margin-top: 8mm; display: grid; grid-template-columns: 1fr 1fr; gap: 2.6mm; }
+  .svc { display: flex; gap: 3.6mm; align-items: flex-start; background: var(--porcelain); border: 1px solid var(--hairline); border-radius: 4.5mm; padding: 3.6mm 4.2mm; }
+  .svc .ico { flex: none; width: 8.4mm; height: 8.4mm; border-radius: 2.6mm; background: var(--linen); color: var(--caramel-deep); display: grid; place-items: center; }
+  .svc .ico svg { width: 4.4mm; height: 4.4mm; }
+  .svc .n { font-size: 6.6pt; letter-spacing: .18em; color: var(--caramel-deep); font-weight: 500; }
+  .svc h3 { margin-top: .6mm; font-family: var(--display); font-weight: 500; font-size: 12.4pt; line-height: 1.1; }
+  .svc p { margin-top: .8mm; font-size: 8.2pt; line-height: 1.45; color: var(--taupe); }
+
+  .reasons { margin-top: 8mm; background: var(--forest); color: var(--porcelain); border-radius: 6mm; padding: 6mm 6.5mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
+  .reason h4 { font-family: var(--display); font-weight: 400; font-size: 13pt; line-height: 1.08; }
+  .reason h4 i { color: var(--sand); }
+  .reason p { margin-top: 1.6mm; font-size: 7.8pt; line-height: 1.5; color: var(--mint-ink); }
+  .reason + .reason { border-left: 1px solid rgb(253 251 247 / .14); padding-left: 5mm; }
+
+  .cycle-title { margin-top: 10mm; display: flex; align-items: baseline; justify-content: space-between; }
+  .cycle-title h3 { font-family: var(--display); font-weight: 400; font-size: 17pt; }
+  .cycle-title h3 i { color: var(--caramel-deep); }
+  .cycle { margin-top: 5mm; position: relative; display: grid; grid-template-columns: repeat(7, 1fr); }
+  .cycle::before { content: ""; position: absolute; left: 7%; right: 7%; top: 3.4mm; height: 1px; background: linear-gradient(to right, var(--caramel), var(--dune)); }
+  .step { text-align: center; position: relative; }
+  .step .dot { margin: 0 auto; width: 7mm; height: 7mm; border-radius: 999px; background: var(--porcelain); border: 1px solid var(--caramel); display: grid; place-items: center; font-size: 6.4pt; font-weight: 500; color: var(--caramel-deep); }
+  .step:last-child .dot { background: var(--caramel); color: var(--porcelain); }
+  .step span { display: block; margin-top: 2.4mm; font-size: 7.6pt; line-height: 1.3; color: var(--espresso); padding: 0 1mm; }
+
+  /* ───────── Page 3 · Formules ───────── */
+  .center { text-align: center; }
+  .center .lead { margin-left: auto; margin-right: auto; }
+  .plans { margin-top: 9mm; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; align-items: stretch; }
+  .plan { position: relative; border-radius: 7mm; padding: 8mm 7.5mm 7.5mm; display: flex; flex-direction: column; }
+  .plan.essential { background: var(--porcelain); border: 1px solid var(--hairline); box-shadow: 0 16mm 26mm -20mm rgb(42 32 26 / .45); }
+  .plan.premium { background: var(--forest); color: var(--porcelain); box-shadow: 0 18mm 30mm -18mm rgb(36 50 31 / .8); }
+  .badge { position: absolute; top: 7mm; right: 7mm; border-radius: 999px; background: var(--caramel); color: var(--porcelain); padding: 1.6mm 3.2mm; font-size: 5.8pt; font-weight: 600; letter-spacing: .18em; }
+  .plan .code { font-size: 7.2pt; font-weight: 500; letter-spacing: .22em; color: var(--caramel-deep); }
+  .premium .code { color: var(--sand); }
+  .plan h3 { margin-top: 2mm; font-family: var(--display); font-weight: 400; font-size: 31pt; line-height: 1; letter-spacing: -.02em; }
+  .price { margin-top: 5.5mm; display: flex; align-items: flex-end; gap: 3mm; padding-bottom: 5mm; border-bottom: 1px solid var(--hairline); }
+  .premium .price { border-color: rgb(253 251 247 / .15); }
+  .price .pct { font-family: var(--display); font-size: 46pt; line-height: .8; letter-spacing: -.03em; color: var(--caramel-deep); }
+  .premium .price .pct { color: var(--sand); }
+  .price .pct small { font-size: 26pt; margin-left: 1mm; }
+  .price .of { font-size: 7.8pt; line-height: 1.35; color: var(--taupe); padding-bottom: .6mm; }
+  .premium .price .of { color: var(--mint-ink); }
+  .plan .pitch { margin-top: 4.5mm; font-family: var(--display); font-style: italic; font-size: 12.6pt; line-height: 1.25; color: var(--espresso); }
+  .premium .pitch { color: var(--porcelain); }
+  .plan .ideal { margin-top: 1.6mm; font-size: 7.8pt; color: var(--taupe); }
+  .premium .ideal { color: var(--mint-ink); }
+  .plan .intro { margin-top: 5mm; font-size: 8.4pt; font-weight: 500; color: var(--sand); }
+  .plan ul { list-style: none; margin-top: 5mm; display: grid; gap: 2.5mm; }
+  .plan .intro + ul { margin-top: 3mm; }
+  .plan li { display: flex; gap: 2.6mm; align-items: flex-start; font-size: 8.8pt; line-height: 1.35; }
+  .plan li .ck { flex: none; margin-top: .2mm; width: 4.2mm; height: 4.2mm; border-radius: 999px; background: var(--espresso); color: var(--porcelain); display: grid; place-items: center; }
+  .premium li .ck { background: var(--caramel); }
+  .plan li .ck svg { width: 2.4mm; height: 2.4mm; }
+  .essential li { color: rgb(42 32 26 / .88); }
+  .premium li { color: rgb(253 251 247 / .92); }
+  .gift { margin-top: auto; border: 1px solid rgb(220 201 168 / .45); border-radius: 4mm; padding: 3.6mm 4mm; display: flex; justify-content: space-between; align-items: center; gap: 3mm; background: rgb(253 251 247 / .05); }
+  .gift .t { font-size: 8.2pt; line-height: 1.35; color: var(--porcelain); }
+  .gift .t b { display: block; font-weight: 500; color: var(--sand); font-size: 6.4pt; letter-spacing: .2em; margin-bottom: .8mm; }
+  .gift .v { text-align: right; font-family: var(--display); font-size: 17pt; line-height: 1; color: var(--sand); white-space: nowrap; }
+  .gift .v s { display: block; font-family: var(--sans); font-size: 6.4pt; letter-spacing: .14em; color: var(--mint-ink); text-decoration: none; margin-top: .8mm; }
+  .plan.essential .spacer { margin-top: auto; padding-top: 5mm; font-size: 7.8pt; color: var(--taupe); border-top: 1px dashed var(--hairline); }
+  .plan.essential .spacer b { color: var(--caramel-deep); font-weight: 500; }
+
+  .terms { margin-top: 8mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; padding-top: 6mm; border-top: 1px solid var(--hairline); }
+  .term h4 { font-family: var(--display); font-weight: 500; font-size: 12.4pt; display: flex; align-items: center; gap: 2mm; }
+  .term h4::before { content: ""; width: 1.6mm; height: 1.6mm; border-radius: 999px; background: var(--caramel); }
+  .term p { margin-top: 1.6mm; font-size: 7.9pt; line-height: 1.5; color: var(--taupe); }
+
+  /* ───────── Page 4 · Démarrer ───────── */
+  .steps { margin-top: 9mm; display: grid; gap: 3.5mm; }
+  .stp { display: grid; grid-template-columns: 22mm 1fr; gap: 5mm; align-items: center; background: var(--porcelain); border: 1px solid var(--hairline); border-radius: 5mm; padding: 5.5mm 6mm; }
+  .stp .big { font-family: var(--display); font-size: 34pt; line-height: .9; color: var(--caramel); font-style: italic; }
+  .stp h3 { font-family: var(--display); font-weight: 500; font-size: 15pt; line-height: 1.1; }
+  .stp p { margin-top: 1.4mm; font-size: 8.8pt; line-height: 1.5; color: var(--taupe); }
+
+  .contact { margin-top: 8mm; background: var(--forest); color: var(--porcelain); border-radius: 7mm; padding: 8mm 8mm 7mm; position: relative; overflow: hidden; }
+  .contact .glow { position: absolute; right: -25mm; top: -25mm; width: 75mm; height: 75mm; border-radius: 999px; background: rgb(184 135 74 / .32); filter: blur(30px); }
+  .contact > *:not(.glow) { position: relative; }
+  .contact h3 { font-family: var(--display); font-weight: 400; font-size: 23pt; line-height: 1.04; letter-spacing: -.02em; }
+  .contact h3 i { color: var(--sand); }
+  .contact .lead { color: var(--mint-ink); margin-top: 3mm; font-size: 9pt; max-width: 120mm; }
+  .coords { margin-top: 6mm; display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+  .coord { display: flex; gap: 3.4mm; align-items: center; background: rgb(253 251 247 / .07); border: 1px solid rgb(253 251 247 / .1); border-radius: 4mm; padding: 3.4mm 4mm; }
+  .coord .ic { flex: none; width: 9mm; height: 9mm; border-radius: 3mm; background: rgb(253 251 247 / .1); color: var(--sand); display: grid; place-items: center; }
+  .coord .ic svg { width: 4.4mm; height: 4.4mm; }
+  .coord .k { font-size: 6.2pt; letter-spacing: .22em; color: var(--sand); }
+  .coord .v { margin-top: .8mm; font-size: 10pt; color: var(--porcelain); }
+  .contact .zone { margin-top: 5mm; font-size: 7.6pt; color: var(--mint-ink); letter-spacing: .04em; }
+  .contact .zone b { color: var(--sand); font-weight: 500; letter-spacing: .2em; font-size: 6.4pt; margin-right: 2mm; }
+
+  .sign { margin-top: auto; text-align: center; padding-top: 6mm; }
+  .sign svg { height: 11mm; color: var(--caramel); }
+  .sign .name { margin-top: 2mm; font-family: var(--display); font-size: 15pt; letter-spacing: .14em; color: var(--cocoa); font-weight: 500; }
+  .sign .slogan { margin-top: 1.5mm; font-family: var(--display); font-size: 14pt; color: var(--espresso); }
+  .sign .slogan i { color: var(--caramel-deep); }
+</style>
+</head>
+<body>
+
+<!-- Monogramme NOVESYA (repris du site : src/components/ui/Logo.tsx) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 48 46">
+    <path d="M3 19.5 24 3l21 16.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="var(--cocoa)">
+      <rect x="12.2" y="17" width="2.1" height="25.5"/><rect x="33.7" y="17" width="2.1" height="25.5"/>
+      <path d="M12.2 17h4.3l19.3 25.5h-4.3z"/>
+      <rect x="9.6" y="17" width="7.2" height="1.5"/><rect x="9.6" y="41" width="7.2" height="1.5"/><rect x="31.2" y="17" width="7.2" height="1.5"/>
+    </g>
+  </symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- ═════════════════ 01 · COUVERTURE ═════════════════ -->
+<section class="page cover">
+  <div class="blob" style="left:-55mm;top:20mm;width:130mm;height:130mm;background:rgb(220 201 168 / .55)"></div>
+  <div class="blob" style="right:-45mm;top:120mm;width:110mm;height:110mm;background:var(--sage-soft)"></div>
+  <div class="arch"></div>
+
+  <header class="head">
+    <span class="logo"><svg viewBox="0 0 48 46"><use href="#mark"/></svg><span class="word"><span class="name">NOVESYA</span><span class="sub">CONCIERGERIE</span></span></span>
+    <span class="folio">ÉDITION 2026</span>
+  </header>
+
+  <div class="hero">
+    <p class="eyebrow">Formules d'accompagnement</p>
+    <h1 class="display">Votre logement<br>travaille. <span class="accent">NOVESYA s'occupe<br>du reste.</span></h1>
+    <div class="rule"></div>
+    <p class="lead">Conciergerie Airbnb premium. Nous accompagnons les propriétaires dans la gestion, l'optimisation et la valorisation de leur location courte durée.</p>
+    <div class="chips">
+      <span class="chip"><b>Sans abonnement</b></span>
+      <span class="chip">Un seul interlocuteur</span>
+      <span class="chip">Sud 77 · Essonne 91 · Val-de-Marne 94</span>
+    </div>
+  </div>
+
+  <div class="cover-band">
+    <p class="promise">Nous gérons.<br><i>Vous encaissez.</i></p>
+    <p class="meta"><span class="tag">CONFIDENTIEL</span><br>Document personnel et confidentiel,<br>remis lors de notre échange.</p>
+  </div>
+</section>
+
+<!-- ═════════════════ 02 · NOTRE ACCOMPAGNEMENT ═════════════════ -->
+<section class="page">
+  <div class="blob" style="right:-60mm;top:-30mm;width:120mm;height:120mm;background:rgb(220 201 168 / .45)"></div>
+
+  <header class="head">
+    <span class="logo"><svg viewBox="0 0 48 46"><use href="#mark"/></svg><span class="word"><span class="name">NOVESYA</span><span class="sub">CONCIERGERIE</span></span></span>
+    <span class="folio">02 · NOTRE ACCOMPAGNEMENT</span>
+  </header>
+
+  <div class="section-top">
+    <p class="eyebrow">Ce que nous prenons en charge</p>
+    <h2>Tout ce que votre logement <span class="accent">mérite.</span></h2>
+    <p class="lead">Huit expertises, un seul interlocuteur. Du premier message du voyageur jusqu'à son départ, nous gérons chaque étape. Vous gardez une vision claire de vos revenus, sans la charge du quotidien.</p>
+  </div>
+
+  <div class="services">
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></span><div><p class="n">01</p><h3>Gestion Airbnb</h3><p>Création et optimisation de l'annonce.</p></div></div>
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span><div><p class="n">02</p><h3>Gestion des voyageurs</h3><p>Messages, demandes, assistance et suivi.</p></div></div>
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><div><p class="n">03</p><h3>Tarification dynamique</h3><p>Optimisation des prix selon la demande.</p></div></div>
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg></span><div><p class="n">04</p><h3>Check-in / Check-out</h3><p>Gestion de l'arrivée et du départ.</p></div></div>
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span><div><p class="n">05</p><h3>Ménage &amp; linge</h3><p>Coordination entre chaque réservation.</p></div></div>
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span><div><p class="n">06</p><h3>Maintenance</h3><p>Gestion des petits incidents et interventions.</p></div></div>
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><div><p class="n">07</p><h3>Shooting professionnel</h3><p>Photos premium pour valoriser le bien.</p></div></div>
+    <div class="svc"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><div><p class="n">08</p><h3>Reporting</h3><p>Suivi transparent des performances.</p></div></div>
+  </div>
+
+  <div class="reasons">
+    <div class="reason"><h4>Plus de <i>revenus</i></h4><p>Optimisation des prix et du calendrier.</p></div>
+    <div class="reason"><h4>Zéro charge <i>mentale</i></h4><p>Nous gérons les voyageurs et les opérations.</p></div>
+    <div class="reason"><h4>Image <i>premium</i></h4><p>Votre logement présenté professionnellement.</p></div>
+    <div class="reason"><h4><i>Transparence</i></h4><p>Une vision claire de vos performances.</p></div>
+  </div>
+
+  <div class="cycle-title">
+    <h3>Votre logement <i>en autopilote.</i></h3>
+    <p class="eyebrow">Le cycle de chaque séjour</p>
+  </div>
+  <div class="cycle">
+    <div class="step"><div class="dot num">1</div><span>Réservation</span></div>
+    <div class="step"><div class="dot num">2</div><span>Voyageur</span></div>
+    <div class="step"><div class="dot num">3</div><span>Check-in</span></div>
+    <div class="step"><div class="dot num">4</div><span>Séjour</span></div>
+    <div class="step"><div class="dot num">5</div><span>Ménage</span></div>
+    <div class="step"><div class="dot num">6</div><span>Check-out</span></div>
+    <div class="step"><div class="dot"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg></div><span>Nouvelle réservation</span></div>
+  </div>
+
+  <footer class="foot"><span>Nous gérons. Vous encaissez.</span><span class="num">02 / 04</span></footer>
+</section>
+
+<!-- ═════════════════ 03 · NOS FORMULES ═════════════════ -->
+<section class="page">
+  <div class="blob" style="left:-60mm;top:40mm;width:120mm;height:120mm;background:rgb(220 201 168 / .5)"></div>
+  <div class="blob" style="right:-50mm;top:150mm;width:100mm;height:100mm;background:var(--sage-soft)"></div>
+
+  <header class="head">
+    <span class="logo"><svg viewBox="0 0 48 46"><use href="#mark"/></svg><span class="word"><span class="name">NOVESYA</span><span class="sub">CONCIERGERIE</span></span></span>
+    <span class="folio">03 · NOS FORMULES</span>
+  </header>
+
+  <div class="section-top center">
+    <p class="eyebrow">Deux formules · une même exigence</p>
+    <h2>Une commission. <span class="accent">Aucune surprise.</span></h2>
+    <p class="lead">Sans abonnement : nous sommes rémunérés uniquement lorsque votre logement génère des revenus.</p>
+  </div>
+
+  <div class="plans">
+    <article class="plan essential">
+      <p class="code">FORMULE NOV</p>
+      <h3>Essentielle</h3>
+      <div class="price"><span class="pct num">15<small>%</small></span><span class="of">des revenus<br>locatifs</span></div>
+      <p class="pitch">Vous gardez le contrôle, nous gérons l'essentiel.</p>
+      <p class="ideal">Idéale si vous assurez vous-même l'accueil des voyageurs.</p>
+      <ul>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Création / optimisation de l'annonce</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Gestion des réservations</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Communication voyageurs</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Optimisation tarifaire</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Coordination du ménage</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Suivi des performances</li>
+      </ul>
+      <p class="spacer">Évolutive : passez en <b>Premium</b> à tout moment.</p>
+    </article>
+
+    <article class="plan premium">
+      <span class="badge">LA PLUS CHOISIE</span>
+      <p class="code">FORMULE SYA</p>
+      <h3>Premium</h3>
+      <div class="price"><span class="pct num">20<small>%</small></span><span class="of">des revenus<br>locatifs</span></div>
+      <p class="pitch">L'excellence dans chaque détail. Vous n'avez plus rien à gérer.</p>
+      <p class="ideal">Idéale pour tout déléguer, de l'accueil au linge.</p>
+      <p class="intro">Tout ce qui est inclus dans Essentielle +</p>
+      <ul>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Check-in / Check-out</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Gestion complète du logement</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Gestion du linge</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Gestion des incidents</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Optimisation avancée</li>
+        <li><span class="ck"><svg><use href="#check"/></svg></span>Reporting mensuel</li>
+      </ul>
+      <div class="gift" style="margin-top:5mm">
+        <p class="t"><b>OFFERT</b>Shooting photo professionnel</p>
+        <p class="v num">150 €<s>VALEUR</s></p>
+      </div>
+    </article>
+  </div>
+
+  <div class="terms">
+    <div class="term"><h4>Sans abonnement</h4><p>La commission est calculée sur les revenus locatifs générés par les réservations.</p></div>
+    <div class="term"><h4>Votre compte conservé</h4><p>Nous intervenons en co-hôte sur votre compte Airbnb : historique et avis préservés.</p></div>
+    <div class="term"><h4>Sans engagement long</h4><p>Modalités précises (base de calcul, ménage, préavis) détaillées dans votre contrat.</p></div>
+  </div>
+
+  <footer class="foot"><span>Nous gérons. Vous encaissez.</span><span class="num">03 / 04</span></footer>
+</section>
+
+<!-- ═════════════════ 04 · DÉMARRER ═════════════════ -->
+<section class="page">
+  <div class="blob" style="left:-50mm;top:-20mm;width:110mm;height:110mm;background:var(--sage-soft)"></div>
+  <div class="blob" style="right:-55mm;top:60mm;width:110mm;height:110mm;background:rgb(220 201 168 / .5)"></div>
+
+  <header class="head">
+    <span class="logo"><svg viewBox="0 0 48 46"><use href="#mark"/></svg><span class="word"><span class="name">NOVESYA</span><span class="sub">CONCIERGERIE</span></span></span>
+    <span class="folio">04 · DÉMARRER</span>
+  </header>
+
+  <div class="section-top">
+    <p class="eyebrow">Comment on démarre</p>
+    <h2>Trois étapes, <span class="accent">et nous prenons le relais.</span></h2>
+  </div>
+
+  <div class="steps">
+    <div class="stp"><span class="big num">01</span><div><h3>Échange &amp; visite</h3><p>Nous découvrons votre logement et vos objectifs, et évaluons ensemble son potentiel.</p></div></div>
+    <div class="stp"><span class="big num">02</span><div><h3>Mise en place</h3><p>Choix de la formule, contrat, accès co-hôte et organisation du ménage et du linge.</p></div></div>
+    <div class="stp"><span class="big num">03</span><div><h3>Mise en ligne</h3><p>Annonce optimisée, photos, tarification : votre logement commence à travailler pour vous.</p></div></div>
+  </div>
+
+  <div class="contact">
+    <div class="glow"></div>
+    <h3>Une question ? <i>Parlons de votre logement.</i></h3>
+    <p class="lead">Un conseiller NOVESYA vous répond personnellement. Sans engagement · Réponse sous 24h.</p>
+    <div class="coords">
+      <div class="coord"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span><div><p class="k">TÉLÉPHONE · WHATSAPP</p><p class="v num">[Votre numéro]</p></div></div>
+      <div class="coord"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><p class="k">E-MAIL</p><p class="v">contact@novesya.fr</p></div></div>
+      <div class="coord"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><div><p class="k">SITE</p><p class="v">novesya.fr</p></div></div>
+      <div class="coord"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg></span><div><p class="k">INSTAGRAM</p><p class="v">@novesya</p></div></div>
+    </div>
+    <p class="zone"><b>ZONE</b>Sud de la Seine-et-Marne (77) · Essonne (91) · Val-de-Marne (94) proche de l'Essonne</p>
+  </div>
+
+  <div class="sign">
+    <svg viewBox="0 0 48 46"><use href="#mark"/></svg>
+    <p class="name">NOVESYA</p>
+    <p class="slogan">Nous gérons. <i>Vous encaissez.</i></p>
+  </div>
+</section>
+
+</body>
+</html>
