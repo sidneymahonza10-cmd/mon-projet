@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulateur NOVESYA — Rendez-vous</title>
+<!--
+  Simulateur de revenus NOVESYA pour les rendez-vous clients.
+  Fichier autonome : fonctionne hors ligne (polices intégrées), sur ordinateur, tablette ou téléphone.
+  Modèle de calcul repris du site (ancien src/lib/estimate.ts) — hypothèses modifiables dans « Hypothèses ».
+  Source : outils/src/simulateur.template.html — régénérer avec : python3 outils/build.py
+-->
+<style>
+/*__FONTS__*/
+:root{--cream:#f6f1e9;--porcelain:#fdfbf7;--linen:#ece3d5;--sand:#dcc9a8;--dune:#c7ae86;--caramel:#b8874a;--caramel-deep:#8a5d28;--espresso:#2a201a;--cocoa:#4a3328;--taupe:#6b5f55;--hairline:#e2d7c6;--sage-soft:#dfe3d6;--forest:#24321f;--mint-ink:#d9dfcf;--display:"EB Garamond",Georgia,serif;--sans:"Geist",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--cream);color:var(--espresso);font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh}
+button,input{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.display{font-family:var(--display);font-weight:400;letter-spacing:-.018em}
+.wrap{max-width:1240px;margin:0 auto;padding:22px 16px 48px}
+@media(min-width:720px){.wrap{padding:28px 32px 56px}}
+
+header.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--hairline)}
+.logo{display:inline-flex;align-items:center;gap:11px;color:var(--cocoa)}
+.logo svg{height:34px}
+.logo b{display:block;font-family:var(--display);font-weight:500;font-size:21px;letter-spacing:.12em;line-height:1}
+.logo small{display:block;margin-top:4px;font-size:8px;letter-spacing:.42em;color:var(--taupe)}
+.top .tag{font-size:11px;letter-spacing:.2em;color:var(--taupe);text-transform:uppercase}
+
+.intro{margin:30px 0 26px}
+.intro h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,5vw,58px);line-height:1;letter-spacing:-.025em}
+.intro h1 i{color:var(--caramel-deep)}
+.intro p{margin-top:12px;color:var(--taupe);font-size:16px;max-width:60ch;line-height:1.55}
+
+.grid{display:grid;gap:18px}
+@media(min-width:980px){.grid{grid-template-columns:.95fr 1.25fr;align-items:start}}
+
+.card{background:var(--porcelain);border:1px solid var(--hairline);border-radius:26px;padding:22px;box-shadow:0 40px 80px -60px rgba(42,32,26,.5)}
+@media(min-width:720px){.card{padding:30px}}
+.lbl{display:block;font-size:13px;color:var(--taupe);margin-bottom:8px}
+.field{width:100%;min-height:50px;border-radius:15px;padding:12px 15px;font-size:16px;background:var(--porcelain);border:1px solid var(--hairline);transition:border-color .2s,box-shadow .2s}
+.field:hover{border-color:var(--dune)}
+.field:focus{outline:none;border-color:var(--caramel-deep);box-shadow:0 0 0 4px rgba(184,135,74,.18)}
+.row{margin-top:22px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(min-width:560px){.three{grid-template-columns:1fr 1fr 1fr}}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--hairline);background:transparent;border-radius:999px;padding:10px 16px;font-size:14px;cursor:pointer;transition:all .2s}
+.pill:hover{border-color:var(--dune)}
+.pill[aria-pressed=true]{background:var(--espresso);border-color:var(--espresso);color:var(--porcelain)}
+
+.stepper{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--hairline);border-radius:15px;height:50px;padding:0 6px}
+.stepper button{width:38px;height:38px;border-radius:11px;border:0;background:var(--linen);color:var(--caramel-deep);font-size:20px;cursor:pointer;line-height:1}
+.stepper button:hover{background:var(--sand)}
+.stepper output{font-family:var(--display);font-size:22px}
+
+.range-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.range-head output{font-family:var(--display);font-size:26px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:999px;background:linear-gradient(to right,var(--caramel) 0,var(--caramel) var(--fill,50%),var(--hairline) var(--fill,50%));cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:34px;height:34px;border-radius:999px;background:var(--porcelain) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 46'><path d='M3 19.5 24 3l21 16.5' fill='none' stroke='%23b8874a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><g fill='%234a3328'><rect x='12.2' y='17' width='2.6' height='25.5'/><rect x='33.2' y='17' width='2.6' height='25.5'/><path d='M12.2 17h4.6l19 25.5h-4.6z'/></g></svg>") center/20px no-repeat;border:2px solid var(--caramel);box-shadow:0 8px 20px rgba(74,51,40,.28)}
+input[type=range]::-moz-range-thumb{width:30px;height:30px;border-radius:999px;background:var(--porcelain);border:2px solid var(--caramel)}
+
+.check{display:flex;gap:12px;align-items:flex-start;cursor:pointer;border:1px solid var(--hairline);border-radius:15px;padding:13px 15px}
+.check input{margin-top:3px;width:18px;height:18px;accent-color:var(--caramel-deep)}
+.check span{font-size:14px;line-height:1.45}
+.check small{display:block;color:var(--taupe);font-size:12.5px;margin-top:2px}
+
+details.hyp{margin-top:22px;border-top:1px dashed var(--hairline);padding-top:16px}
+details.hyp summary{cursor:pointer;font-size:14px;color:var(--caramel-deep);list-style:none}
+details.hyp summary::before{content:"＋ ";}
+details.hyp[open] summary::before{content:"－ ";}
+details.hyp .note{font-size:12.5px;color:var(--taupe);margin-top:10px;line-height:1.5}
+.pct{position:relative}
+.pct::after{content:"%";position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--taupe);font-size:14px}
+
+/* Résultats */
+.res{background:var(--forest);color:var(--porcelain);border-radius:26px;padding:22px;position:relative;overflow:hidden;box-shadow:0 60px 100px -60px rgba(36,50,31,.9)}
+@media(min-width:720px){.res{padding:30px}}
+.res::before{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:rgba(184,135,74,.3);filter:blur(50px);pointer-events:none}
+.res>*{position:relative}
+.res-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;color:var(--mint-ink)}
+.res-head b{color:var(--sand);font-weight:500;letter-spacing:.18em;font-size:11px}
+.kpis{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:620px){.kpis{grid-template-columns:repeat(3,1fr)}}
+.kpi{border:1px solid rgba(253,251,247,.1);background:rgba(253,251,247,.05);border-radius:17px;padding:15px}
+.kpi p{font-size:12.5px;color:var(--mint-ink);line-height:1.35}
+.kpi output{display:block;margin-top:8px;font-family:var(--display);font-size:clamp(24px,3vw,31px);line-height:1}
+.kpi.big{grid-column:1/-1;border-color:rgba(220,201,168,.3);background:rgba(253,251,247,.1)}
+.kpi.big output{font-size:clamp(46px,7vw,64px)}
+.kpi.acc output{color:var(--sand)}
+@media(max-width:619px){.kpi.acc{grid-column:1/-1}}
+.legend{margin-top:22px;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12px;color:var(--mint-ink)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--sand)}
+.legend i.d{width:16px;height:0;border-top:1.5px dashed rgba(253,251,247,.75);border-radius:0;background:none}
+.chart{margin-top:12px;height:150px;display:flex;align-items:flex-end;gap:6px}
+.bar{flex:1;height:100%;position:relative;display:flex;flex-direction:column;justify-content:flex-end}
+.bar .f{border-radius:4px 4px 0 0;background:linear-gradient(to top,rgba(184,135,74,.55),var(--sand));transition:height .5s cubic-bezier(.16,1,.3,1)}
+.bar .c{position:absolute;left:0;right:0;border-top:1.5px dashed rgba(253,251,247,.75);transition:bottom .5s cubic-bezier(.16,1,.3,1)}
+.months{display:flex;gap:6px;margin-top:7px}
+.months span{flex:1;text-align:center;font-size:10.5px;color:var(--mint-ink)}
+
+/* Formules */
+.plans{margin-top:24px;border-top:1px solid rgba(253,251,247,.15);padding-top:20px}
+.plans h2{font-family:var(--display);font-weight:400;font-size:25px}
+.plans h2 i{color:var(--sand)}
+.plans .sub{font-size:12.5px;color:var(--mint-ink);margin-top:4px}
+.pgrid{margin-top:14px;display:grid;gap:10px}
+@media(min-width:620px){.pgrid{grid-template-columns:1fr 1fr}}
+.plan{border-radius:18px;padding:17px;background:var(--porcelain);color:var(--espresso)}
+.plan.prem{background:rgba(253,251,247,.08);border:1px solid rgba(220,201,168,.4);color:var(--porcelain)}
+.plan .pn{display:flex;justify-content:space-between;align-items:baseline}
+.plan .pn b{font-family:var(--display);font-weight:500;font-size:22px}
+.plan .pn span{font-size:11px;letter-spacing:.16em;color:var(--caramel-deep)}
+.plan.prem .pn span{color:var(--sand)}
+.plan table{width:100%;margin-top:10px;border-collapse:collapse;font-size:13.5px}
+.plan td{padding:5px 0}
+.plan td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.plan tr.net td{border-top:1px solid var(--hairline);padding-top:9px;font-weight:600}
+.plan.prem tr.net td{border-color:rgba(253,251,247,.15)}
+.plan tr.net td:last-child{font-family:var(--display);font-size:22px;font-weight:500;color:var(--caramel-deep)}
+.plan.prem tr.net td:last-child{color:var(--sand)}
+.plan .yr{font-size:12px;color:var(--taupe);text-align:right;margin-top:2px}
+.plan.prem .yr{color:var(--mint-ink)}
+.disc{margin-top:18px;font-size:11.5px;color:var(--mint-ink);line-height:1.55}
+
+.actions{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:13px 22px;font-size:15px;border:0;cursor:pointer;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-1px)}
+.btn.dark{background:var(--espresso);color:var(--porcelain)}
+.btn.dark:hover{background:var(--caramel)}
+.btn.ghost{background:transparent;border:1px solid rgba(42,32,26,.2)}
+.btn.ghost:hover{border-color:var(--espresso)}
+
+/* ───── Impression : fiche à remettre au client ───── */
+.print-only,.print-only.pfoot{display:none}
+@page{size:A4;margin:14mm}
+@media print{
+  body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .no-print,.intro,details.hyp,.actions{display:none!important}
+  .print-only{display:block}
+  .wrap{padding:0;max-width:none}
+  .grid{display:block}
+  .card.inputs{display:none}
+  .res{box-shadow:none;padding:18px 20px;border-radius:18px}
+  .res::before{display:none}
+  .kpis{grid-template-columns:repeat(3,1fr);margin-top:12px;gap:8px}
+  .kpi{padding:11px 13px}
+  .kpi.big output{font-size:44px}
+  .kpi output{font-size:24px}
+  .legend{margin-top:14px}
+  .chart{height:105px}
+  .plans{margin-top:16px;padding-top:14px}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .plan{padding:13px 15px;break-inside:avoid}
+  .summary{margin:12px 0 12px}
+  .print-only.pfoot{display:flex}
+}
+.summary{border:1px solid var(--hairline);border-radius:18px;padding:16px 18px;background:var(--porcelain)}
+.summary h2{font-family:var(--display);font-weight:400;font-size:30px;line-height:1}
+.summary h2 i{color:var(--caramel-deep)}
+.summary dl{margin-top:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px 16px;font-size:12.5px}
+.summary dt{color:var(--taupe)}
+.summary dd{font-weight:500}
+.pfoot{margin-top:12px;font-size:11px;color:var(--taupe);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 48 46"><path d="M3 19.5 24 3l21 16.5" fill="none" stroke="#b8874a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><g fill="#4a3328"><rect x="12.2" y="17" width="2.2" height="25.5"/><rect x="33.6" y="17" width="2.2" height="25.5"/><path d="M12.2 17h4.4l19.2 25.5h-4.4z"/><rect x="9.6" y="17" width="7.3" height="1.6"/><rect x="9.6" y="40.9" width="7.3" height="1.6"/><rect x="31.1" y="17" width="7.3" height="1.6"/></g></symbol>
+</svg>
+<div class="wrap">
+  <header class="top">
+    <span class="logo"><svg viewBox="0 0 48 46"><use href="#mark"/></svg><span><b>NOVESYA</b><small>CONCIERGERIE</small></span></span>
+    <span class="tag"><span class="no-print">Simulateur · rendez-vous</span><span class="print-only" id="p-date"></span></span>
+  </header>
+
+  <section class="intro">
+    <h1>Combien votre logement <i>pourrait-il vous rapporter&nbsp;?</i></h1>
+    <p>Projection indicative des revenus avec une gestion NOVESYA, et ce qu'il reste au propriétaire avec chaque formule.</p>
+  </section>
+
+  <div class="print-only summary" id="p-summary"></div>
+
+  <div class="grid">
+    <form class="card inputs" id="form" onsubmit="return false">
+      <div class="two">
+        <div><label class="lbl" for="client">Propriétaire</label><input class="field" id="client" placeholder="Nom du client" autocomplete="off"></div>
+        <div><label class="lbl" for="city">Ville</label><input class="field" id="city" placeholder="Ex. Évry-Courcouronnes" autocomplete="off"></div>
+      </div>
+
+      <div class="row">
+        <span class="lbl">Type de logement</span>
+        <div class="pills" id="types"></div>
+      </div>
+
+      <div class="row three">
+        <div><span class="lbl">Chambres</span><div class="stepper" data-k="bedrooms" data-min="0" data-max="8"><button type="button" aria-label="Moins">−</button><output></output><button type="button" aria-label="Plus">+</button></div></div>
+        <div><span class="lbl">Voyageurs</span><div class="stepper" data-k="guests" data-min="1" data-max="16"><button type="button" aria-label="Moins">−</button><output></output><button type="button" aria-label="Plus">+</button></div></div>
+        <div><label class="lbl" for="surface">Surface (m²)</label><input class="field num" id="surface" type="number" inputmode="numeric" min="9" max="600"></div>
+      </div>
+
+      <div class="row">
+        <div class="range-head"><label class="lbl" for="price" style="margin:0">Prix actuel par nuit</label><output class="num" id="price-o"></output></div>
+        <input type="range" id="price" min="30" max="600" step="5">
+      </div>
+      <div class="row">
+        <div class="range-head"><label class="lbl" for="nights" style="margin:0">Nuits disponibles par mois</label><output class="num" id="nights-o"></output></div>
+        <input type="range" id="nights" min="5" max="31" step="1">
+      </div>
+
+      <div class="row">
+        <label class="check"><input type="checkbox" id="demand"><span>Secteur à forte demande<small>Proche d'Orly, d'une gare RER, de Fontainebleau, d'un pôle d'affaires… (+4 pts d'occupation, +3 % sur le prix)</small></span></label>
+      </div>
+
+      <details class="hyp">
+        <summary>Hypothèses du calcul</summary>
+        <div class="row two" style="margin-top:14px">
+          <div><label class="lbl" for="h-cur">Occupation actuelle (gestion seule)</label><div class="pct"><input class="field num" id="h-cur" type="number" min="10" max="100"></div></div>
+          <div><label class="lbl" for="h-opt">Occupation de base NOVESYA</label><div class="pct"><input class="field num" id="h-opt" type="number" min="10" max="100"></div></div>
+          <div><label class="lbl" for="h-ess">Commission Essentielle</label><div class="pct"><input class="field num" id="h-ess" type="number" min="0" max="50" step="0.5"></div></div>
+          <div><label class="lbl" for="h-pre">Commission Premium</label><div class="pct"><input class="field num" id="h-pre" type="number" min="0" max="50" step="0.5"></div></div>
+        </div>
+        <p class="note">Le prix optimisé ajoute 8 à 14 % selon le type de logement (+2 % si au moins 16 m² par voyageur). Occupation plafonnée à 90 %. Saisonnalité moyenne appliquée mois par mois. Les réglages sont mémorisés sur cet appareil.</p>
+      </details>
+    </form>
+
+    <section class="res" aria-live="polite">
+      <div class="res-head"><b>PROJECTION NOVESYA</b><span id="r-price"></span></div>
+      <div class="kpis">
+        <div class="kpi big"><p>Revenus locatifs mensuels estimés</p><output class="num" id="k-month"></output></div>
+        <div class="kpi"><p>Taux d'occupation estimé</p><output class="num" id="k-occ"></output></div>
+        <div class="kpi"><p>Revenus locatifs annuels</p><output class="num" id="k-year"></output></div>
+        <div class="kpi acc"><p>Revenus supplémentaires / an</p><output class="num" id="k-extra"></output></div>
+      </div>
+      <div class="legend"><span><i></i> Avec NOVESYA</span><span><i class="d"></i> Gestion actuelle (hypothèse)</span></div>
+      <div class="chart" id="chart"></div>
+      <div class="months" id="months"></div>
+
+      <div class="plans">
+        <h2>Ce qu'il vous reste, <i>selon la formule</i></h2>
+        <p class="sub">Moyenne mensuelle, commission calculée sur les revenus locatifs.</p>
+        <div class="pgrid">
+          <div class="plan"><div class="pn"><b>Essentielle</b><span id="ess-rate"></span></div><table><tr><td>Revenus locatifs</td><td id="ess-rev"></td></tr><tr><td>Commission NOVESYA</td><td id="ess-com"></td></tr><tr class="net"><td>Pour vous</td><td id="ess-net"></td></tr></table><p class="yr" id="ess-yr"></p></div>
+          <div class="plan prem"><div class="pn"><b>Premium</b><span id="pre-rate"></span></div><table><tr><td>Revenus locatifs</td><td id="pre-rev"></td></tr><tr><td>Commission NOVESYA</td><td id="pre-com"></td></tr><tr class="net"><td>Pour vous</td><td id="pre-net"></td></tr></table><p class="yr" id="pre-yr"></p></div>
+        </div>
+        <p class="disc">Estimation indicative, non contractuelle, basée sur les informations renseignées. Montants avant frais de ménage, charges et fiscalité. Les modalités exactes (base de calcul, ménage, préavis) figurent au contrat.</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="actions no-print">
+    <button class="btn dark" type="button" onclick="window.print()">Imprimer / enregistrer en PDF</button>
+    <button class="btn ghost" type="button" id="reset">Nouvelle simulation</button>
+  </div>
+  <p class="print-only pfoot"><span>NOVESYA Conciergerie · contact@novesya.fr · novesya.fr</span><span>Nous gérons. Vous encaissez.</span></p>
+</div>
+
+<script>
+(() => {
+  // ── Modèle (identique au simulateur du site) ──
+  const TYPES = ["Studio", "Appartement", "Maison", "Loft", "Villa"];
+  const BY_TYPE = { Studio: { occ: 0.03, price: 0.08 }, Appartement: { occ: 0, price: 0.1 }, Loft: { occ: 0.01, price: 0.12 }, Maison: { occ: -0.03, price: 0.12 }, Villa: { occ: -0.06, price: 0.14 } };
+  const SEASON = [0.8, 0.82, 0.9, 0.98, 1.04, 1.14, 1.27, 1.29, 1.07, 0.95, 0.85, 0.89];
+  const MONTHS = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"];
+  const MAX_OCC = 0.9, DEMAND = { occ: 0.04, price: 0.03 };
+  const DEFAULT_HYP = { cur: 60, opt: 74, ess: 15, pre: 20 };
+  const DEFAULT = { client: "", city: "", type: "Appartement", bedrooms: 2, guests: 4, surface: 55, price: 110, nights: 26, demand: false };
+
+  const $ = (id) => document.getElementById(id);
+  const eur = (n) => Math.round(n).toLocaleString("fr-FR") + " €";
+  const load = (k, d) => { try { return { ...d, ...JSON.parse(localStorage.getItem(k) || "{}") }; } catch { return { ...d }; } };
+  const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+
+  const hyp = load("novesya-sim-hyp", DEFAULT_HYP);
+  let s = { ...DEFAULT };
+
+  function estimate() {
+    const t = BY_TYPE[s.type];
+    const space = s.guests > 0 && s.surface / s.guests >= 16 ? 0.02 : 0;
+    const uplift = t.price + space + (s.demand ? DEMAND.price : 0);
+    const occ = Math.min(MAX_OCC, hyp.opt / 100 + t.occ + (s.demand ? DEMAND.occ : 0));
+    const optPrice = s.price * (1 + uplift);
+    const monthly = optPrice * s.nights * occ;
+    const current = s.price * s.nights * (hyp.cur / 100);
+    return { monthly, current, occ, optPrice, months: SEASON.map((k) => ({ cur: current * k, opt: monthly * k })) };
+  }
+
+  // ── Construction de l'interface ──
+  const types = $("types");
+  TYPES.forEach((t) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "pill"; b.textContent = t;
+    b.onclick = () => { s.type = t; render(); };
+    types.appendChild(b);
+  });
+  const chart = $("chart"), months = $("months");
+  MONTHS.forEach((m) => {
+    chart.insertAdjacentHTML("beforeend", '<div class="bar"><div class="f"></div><div class="c"></div></div>');
+    months.insertAdjacentHTML("beforeend", `<span>${m}</span>`);
+  });
+  document.querySelectorAll(".stepper").forEach((el) => {
+    const k = el.dataset.k, min = +el.dataset.min, max = +el.dataset.max;
+    const [minus, plus] = el.querySelectorAll("button");
+    minus.onclick = () => { s[k] = Math.max(min, s[k] - 1); render(); };
+    plus.onclick = () => { s[k] = Math.min(max, s[k] + 1); render(); };
+  });
+  $("client").oninput = (e) => { s.client = e.target.value; render(); };
+  $("city").oninput = (e) => { s.city = e.target.value; render(); };
+  $("surface").oninput = (e) => { s.surface = Math.max(0, +e.target.value || 0); render(true); };
+  $("price").oninput = (e) => { s.price = +e.target.value; render(); };
+  $("nights").oninput = (e) => { s.nights = +e.target.value; render(); };
+  $("demand").onchange = (e) => { s.demand = e.target.checked; render(); };
+  [["h-cur", "cur"], ["h-opt", "opt"], ["h-ess", "ess"], ["h-pre", "pre"]].forEach(([id, k]) => {
+    $(id).value = hyp[k];
+    $(id).oninput = (e) => { const v = parseFloat(e.target.value); if (!isNaN(v)) { hyp[k] = v; save("novesya-sim-hyp", hyp); render(true); } };
+  });
+  $("reset").onclick = () => { s = { ...DEFAULT }; syncInputs(); render(); window.scrollTo({ top: 0, behavior: "smooth" }); };
+
+  function syncInputs() {
+    $("client").value = s.client; $("city").value = s.city; $("surface").value = s.surface;
+    $("price").value = s.price; $("nights").value = s.nights; $("demand").checked = s.demand;
+  }
+
+  function fill(range) { range.style.setProperty("--fill", ((range.value - range.min) / (range.max - range.min)) * 100 + "%"); }
+
+  function render() {
+    types.querySelectorAll(".pill").forEach((b) => b.setAttribute("aria-pressed", b.textContent === s.type));
+    document.querySelectorAll(".stepper").forEach((el) => {
+      const v = s[el.dataset.k];
+      el.querySelector("output").textContent = el.dataset.k === "bedrooms" && v === 0 ? "Studio" : v;
+    });
+    $("price-o").textContent = eur(s.price); $("nights-o").textContent = s.nights + " nuits";
+    fill($("price")); fill($("nights"));
+
+    const r = estimate();
+    $("r-price").textContent = "Prix optimisé moyen : " + eur(r.optPrice) + " / nuit";
+    $("k-month").textContent = eur(r.monthly);
+    $("k-occ").textContent = Math.round(r.occ * 100) + " %";
+    $("k-year").textContent = eur(r.monthly * 12);
+    $("k-extra").textContent = "+" + eur(Math.max(0, (r.monthly - r.current) * 12));
+
+    const max = Math.max(...r.months.map((m) => Math.max(m.opt, m.cur))) || 1;
+    chart.querySelectorAll(".bar").forEach((b, i) => {
+      b.querySelector(".f").style.height = (r.months[i].opt / max) * 100 + "%";
+      b.querySelector(".c").style.bottom = (r.months[i].cur / max) * 100 + "%";
+    });
+
+    for (const [p, rate] of [["ess", hyp.ess], ["pre", hyp.pre]]) {
+      const com = (r.monthly * rate) / 100, net = r.monthly - com;
+      $(p + "-rate").textContent = String(rate).replace(".", ",") + " %";
+      $(p + "-rev").textContent = eur(r.monthly);
+      $(p + "-com").textContent = "− " + eur(com);
+      $(p + "-net").textContent = eur(net);
+      $(p + "-yr").textContent = "soit " + eur(net * 12) + " par an";
+    }
+
+    // Fiche imprimée
+    const today = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    $("p-date").textContent = "Simulation du " + today;
+    const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    $("p-summary").innerHTML =
+      `<h2>Simulation de revenus${s.client ? ` <i>· ${esc(s.client)}</i>` : ""}</h2>` +
+      `<dl><div><dt>Ville</dt><dd>${esc(s.city) || "—"}</dd></div><div><dt>Logement</dt><dd>${s.type}, ${s.bedrooms === 0 ? "studio" : s.bedrooms + " ch."}</dd></div>` +
+      `<div><dt>Capacité / surface</dt><dd>${s.guests} voyageurs · ${s.surface} m²</dd></div><div><dt>Prix actuel</dt><dd>${eur(s.price)} / nuit · ${s.nights} nuits/mois</dd></div></dl>`;
+  }
+
+  syncInputs();
+  render();
+})();
+</script>
+</body>
+</html>

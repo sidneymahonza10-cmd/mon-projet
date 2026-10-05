@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { formulesHref, site, whatsappHref } from "@/config/site";
 import { Logo } from "@/components/ui/Logo";
 import { InstagramIcon, WhatsAppIcon } from "@/components/ui/BrandIcons";
+import { secteurs, secteurHref } from "@/data/secteurs";
 
 const columns = [
   {
@@ -10,7 +11,7 @@ const columns = [
       { label: "Accueil", href: "/#accueil" },
       { label: "Notre histoire", href: "/qui-sommes-nous" },
       { label: "Notre méthode", href: "/#methode" },
-      { label: "Estimation", href: "/#estimation" },
+      { label: "Estimation", href: "/#contact" },
     ],
   },
   {
@@ -22,6 +23,10 @@ const columns = [
       { label: "Contact", href: "/#contact" },
     ],
   },
+  {
+    title: "Zones d'intervention",
+    links: secteurs.map((s) => ({ label: `${s.name} (${s.dept})`, href: secteurHref(s.slug) })),
+  },
 ];
 
 export function Footer() {
@@ -29,7 +34,7 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-linen pb-28 pt-20 text-espresso sm:pb-12">
       <div className="container-x">
-        <div className="grid gap-14 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+        <div className="grid gap-14 lg:grid-cols-[1.3fr_0.9fr_0.9fr_1.1fr_1.2fr]">
           <div>
             <Logo />
             <p className="mt-6 max-w-xs text-taupe">{site.tagline}.</p>

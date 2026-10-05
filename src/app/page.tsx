@@ -5,7 +5,6 @@ import { Shooting } from "@/components/sections/Shooting";
 import { Services } from "@/components/sections/Services";
 import { Dashboard } from "@/components/sections/Dashboard";
 import { Formulas } from "@/components/sections/Formulas";
-import { Calculator } from "@/components/sections/Calculator";
 import { Stats } from "@/components/sections/Stats";
 import { MapSection } from "@/components/sections/MapSection";
 import { FAQ } from "@/components/sections/FAQ";
@@ -48,7 +47,6 @@ export default function Home() {
       <Services />
       <Dashboard />
       <Formulas />
-      <Calculator />
       <Stats />
       <MapSection />
       <FAQ />

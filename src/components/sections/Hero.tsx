@@ -61,8 +61,8 @@ function Intro({ start }: { start: number | null }) {
         animate={ready ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 1, delay: d + 0.8, ease }}
       >
-        <MagneticButton href="#estimation" size="lg">
-          Estimer mon potentiel locatif
+        <MagneticButton href="#contact" size="lg">
+          Demander mon estimation gratuite
           <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
         </MagneticButton>
         <MagneticButton href={formulesHref} variant="ghost" size="lg">

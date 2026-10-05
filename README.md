@@ -7,7 +7,7 @@ Construit avec **Next.js 16 (App Router) · React 19 · TypeScript · Tailwind C
 Direction « Maison claire » : palette crème, lin, sable, caramel et vert forêt issue de la brochure ;
 logo au grand N sous le toit ; intro animée du logo, arche qui s'ouvre en plein écran au scroll,
 parcours « autopilote » en zigzag, services en carrousel horizontal libre, avant / après piloté par un appareil photo,
-reporting mensuel, curseur maison sur le simulateur.
+reporting mensuel, pages secteurs pour le référencement local (91, 77 sud, 94).
 
 ## Lancer le site
 
@@ -19,7 +19,9 @@ npm start          # sert le build
 npm run lint       # vérification du code
 ```
 
-Déploiement recommandé : [Vercel](https://vercel.com) (import du dépôt GitHub, aucune configuration requise).
+Déploiement recommandé : [Netlify](https://www.netlify.com) (import du dépôt GitHub, Next.js détecté automatiquement ; l'offre gratuite autorise un usage commercial).
+
+Outils hors site : `outils/simulateur-rdv.html` (simulateur de revenus pour les rendez-vous clients), `plaquette/` (plaquette PDF), `logo/` (déclinaisons du logo).
 
 ## Personnaliser (placeholders)
 
@@ -34,8 +36,9 @@ Toutes les informations provisoires sont regroupées dans 3 fichiers :
 Autres points à compléter :
 
 - **Logo** : `src/components/ui/Logo.tsx` (logo typographique provisoire) et `src/app/icon.svg` (favicon).
-- **Simulateur** : hypothèses de calcul dans `src/lib/estimate.ts` (taux d'occupation, saisonnalité, villes à forte demande).
-- **Formulaires** : la page `/formules` (téléphone + e-mail, rappel en privé) et le formulaire d'estimation envoient vers `src/app/api/lead/route.ts` — à brancher sur un e-mail (Resend, Brevo…) ou un CRM.
+- **Pages secteurs** (SEO local) : textes, communes et FAQ dans `src/data/secteurs.ts` → `/conciergerie-airbnb/essonne`, `/seine-et-marne-sud`, `/val-de-marne`.
+- **Titre Google** de l'accueil : `seoTitle` / `seoDescription` dans `src/config/site.ts`.
+- **Formulaires** : la page `/formules` (téléphone + e-mail, rappel en privé) et le formulaire d'estimation envoient vers `src/app/api/lead/route.ts`, qui transmet chaque demande par e-mail via [Resend](https://resend.com). Définissez chez l'hébergeur `RESEND_API_KEY`, `LEAD_EMAIL_TO` et `LEAD_EMAIL_FROM` (voir `.env.example`).
 - **Pages légales** : `src/app/mentions-legales` et `src/app/confidentialite` (champs entre crochets).
 - **FAQ** : les réponses marquées `[À préciser par NOVESYA]`.
 

@@ -14,6 +14,10 @@ export const site = {
   promise: "Nous gérons. Vous encaissez.",
   description:
     "NOVESYA accompagne les propriétaires dans la gestion, l'optimisation et la valorisation de leurs locations Airbnb.",
+  /** Titre et description affichés dans Google pour la page d'accueil */
+  seoTitle: "Conciergerie Airbnb Essonne, Melun & Sud 77 | NOVESYA",
+  seoDescription:
+    "Conciergerie Airbnb premium en Essonne (91), sud Seine-et-Marne (77) et Val-de-Marne (94) : annonce, voyageurs, ménage et prix gérés pour vous. Estimation gratuite.",
 
   // PLACEHOLDER — domaine définitif du site (utilisé pour le SEO / Open Graph)
   url: "https://www.novesya.fr",
@@ -58,7 +62,6 @@ export const nav = [
   { label: "Notre méthode", href: "/#methode" },
   { label: "Services", href: "/#services" },
   { label: "Formules", href: "/#formules" },
-  { label: "Estimation", href: "/#estimation" },
   { label: "FAQ", href: "/#faq" },
   { label: "Contact", href: "/#contact" },
 ] as const;
